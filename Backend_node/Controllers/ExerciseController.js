@@ -52,6 +52,19 @@ const getExercises = async (req, res) => {
     }
 };
 
+const getCategories = async (req, res) => {
+    try {
+        // Get distinct categories from the ExerciseModel
+        const categories = await ExerciseModel.distinct('category');
+
+        // Send success response with the categories
+        return res.json({ success: true, categories });
+    } catch (error) {
+        // Handle any errors
+        return res.status(500).json({ success: false, message: 'Error fetching categories', error: error.message });
+    }
+};
 
 
-export { addExercise ,getExercises};
+
+export { addExercise ,getExercises , getCategories};

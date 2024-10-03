@@ -1,6 +1,7 @@
 import express from 'express';
 import { connectDB } from './config/db.js';
 import dotenv from 'dotenv';
+import cors from 'cors'
 
 import ExerciseRouter from './routes/ExerciseRoute.js'
 
@@ -13,6 +14,8 @@ const port = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json()); // Parse JSON
+
+app.use(cors());
 
 
 
