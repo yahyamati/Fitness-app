@@ -110,43 +110,59 @@ const Chat: React.FC = () => {
     
 
     return (
-        <div className="bg-customGray h-screen flex flex-col justify-between p-4">
-            <div className="flex-1 overflow-y-auto space-y-4">
-                {chatHistory.map((chat, index) => (
-                    <div
-                        key={index}
-                        className={`flex ${chat.sender === 'user' ? 'justify-end' : 'justify-start'} items-center`}
-                    >
-                        <div
-                            className={`p-3 rounded-lg ${
-                                chat.sender === 'user'
-                                    ? 'bg-input text-white max-w-xs text-right'
-                                    : 'bg-input text-white max-w-xs text-left'
-                            }`}
-                        >
-                            <strong>{chat.sender === 'user' ? 'You: ' : 'GPT: '}</strong>
-                            {chat.text}
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className="flex mt-4">
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Message ChatGPT"
-                    className="flex-1 p-3 ml-3 bg-input border border-gray-600 rounded-full text-white"
-                />
-                <button
-                    onClick={handleSend}
-                    className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                    Send
-                </button>
-            </div>
+  <div className="bg-customGray h-[500px] flex flex-col justify-between p-3">
+   <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide pb-5">
+      {chatHistory.map((chat, index) => (
+        <div
+          key={index}
+          className={`flex ${chat.sender === 'user' ? 'justify-end' : 'justify-start'} items-center`}
+        >
+          <div
+            className={`p-3 rounded-lg ${
+              chat.sender === 'user'
+                ? 'bg-input text-white max-w-xs text-right'
+                : 'bg-input text-white max-w-xs text-left'
+            }`}
+          >
+            <strong>{chat.sender === 'user' ? 'You: ' : 'GPT: '}</strong>
+            {chat.text}
+          </div>
         </div>
-    );
+      ))}
+    </div>
+    <div className="flex mt-4">
+  <div className="relative w-full">
+    <input
+      type="text"
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      placeholder="Message ChatGPT"
+      className="w-full p-3 pl-4 pr-12 bg-input border border-gray-600 rounded-full text-white"
+    />
+    <button
+      onClick={handleSend}
+      className="absolute inset-y-0 right-3 flex items-center justify-center text-white"
+    >
+      {/* Vertical Arrow Icon (resembling ChatGPT's send icon) */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-6 transform rotate--180 "
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+  </div>
+);
 };
 
 export default Chat;

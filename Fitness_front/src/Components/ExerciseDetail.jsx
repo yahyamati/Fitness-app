@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Chat from '../chat/Chat'; 
 import axios from 'axios';
 
 const ExerciseDetail = () => {
   const { name } = useParams(); // Get the exercise name from the URL
   const [exercise, setExercise] = useState(null); // State to hold exercise data
   const [loading, setLoading] = useState(true); // State for loading
+  const [showChat, setShowChat] = useState(false); // State to toggle Chat visibility
+
+  const toggleChat = () => {
+    setShowChat(!showChat); // Toggle chat visibility when button is clicked
+  };
+
 
   useEffect(() => {
     const fetchExercise = async () => {
@@ -72,6 +79,21 @@ const ExerciseDetail = () => {
           </p>
         </div>
       </div>
+
+      <div
+          className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg'
+          onClick={toggleChat} 
+        >
+         
+          💬
+        </div>
+
+        
+        {showChat && (
+          <div className="fixed bottom-20 right-5 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+            <Chat /> 
+          </div>
+        )}
     </div>
   );
   
