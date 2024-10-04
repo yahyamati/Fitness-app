@@ -32,48 +32,49 @@ const ExerciseDetail = () => {
   }, [name]); // Dependency on name
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center text-xl text-gray-600">Loading...</div>;
   }
 
   if (!exercise) {
-    return <div>Exercise not found</div>;
+    return <div className="text-center text-xl text-red-500">Exercise not found</div>;
   }
 
   return (
-    <div className='bg-backgroundExercice'>
-      
-      <div className="flex  "> {/* Center the name container */}
-        <div className=" flex items-center justify-center w-[250px] h-[250px] text-center"> {/* Width and height set to 250px */}
-          <h1 className="text-4xl font-bold text-black">{exercise.name}</h1>
+    <div className="bg-backgroundExercice h-screen bg-cover bg-center flex flex-col md:items-center md:justify-center">
+      {/* Wrapper to center content */}
+      <div className="w-full max-w-5xl p-5">
+        {/* Name Section */}
+        <div className="flex justify-center mb-3 md:mb-5"> {/* Center the name */}
+          <h1 className="text-2xl md:text-4xl font-bold text-white">{exercise.name}</h1>
         </div>
-      </div>
-      <div className="relative h-96 w-full"> {/* Set height to define the section size */}
-        {exercise.video && (
-          <video
-            className="absolute top-0 left-0 w-full h-full object-cover"
-            src={exercise.video}
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-        )}
-        {/* Overlay and Content */}
-       
-      </div>
-
-      {/* Name Section below the video */}
-      
-
-      {/* Additional Content */}
-      <div className="p-5 text-white mt-5">
-        <p className="text-lg text-black">
-          Here you can add more information about the exercise, like instructions, details, etc.
-        </p>
-        {/* More content can go here */}
+  
+        {/* Video Section */}
+        <div className="relative w-full flex justify-center items-center mb-3 md:mb-5">
+          {/* Adjusts size and centering */}
+          {exercise.video ? (
+            <video
+              className="w-full max-w-4xl h-auto rounded-lg"
+              src={exercise.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <p className="text-lg text-red-500">No video available</p>
+          )}
+        </div>
+  
+        {/* Description Section */}
+        <div className="p-5 text-white mt-3 md:mt-5">
+          <p className="text-lg">
+            Here you can add more information about the exercise, like instructions, details, etc.
+          </p>
+        </div>
       </div>
     </div>
   );
+  
 };
 
 export default ExerciseDetail;

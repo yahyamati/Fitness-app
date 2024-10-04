@@ -33,15 +33,22 @@ const Exercise = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-between">
+    <div className="p-6">
+      <div className="flex flex-wrap justify-around gap-10">
         {Object.entries(exercisesByCategory).map(([category, exercises]) => (
-          <div key={category} className="w-1/4 mb-6 p-2">
-            <h2 className="text-xl font-semibold text-blue-300 text-center">{category}</h2>
-            <div className="flex flex-col mt-5 text-center">
+          <div key={category} className="w-full md:w-1/3 lg:w-1/5">
+            {/* Category Title */}
+            <h2 className="text-2xl font-bold text-center mb-6 text-blue-500">{category}</h2>
+
+            {/* Exercise Links in Column under each category */}
+            <div className="flex flex-col items-center ">
               {exercises.map((exercise) => (
-                <Link to={`/exercise/${exercise.name}`} key={exercise._id} className="p-2 text-white">
-                  <strong>{exercise.name}</strong>
+                <Link
+                  to={`/exercise/${exercise.name}`}
+                  key={exercise._id}
+                  className=" p-4 text-center w-full"
+                >
+                  <strong className="text-lg text-white">{exercise.name}</strong>
                 </Link>
               ))}
             </div>
