@@ -47,9 +47,9 @@ const ExerciseDetail = () => {
   }
 
   return (
-    <div className="bg-backgroundExercice h-screen bg-cover bg-center flex flex-col md:items-center md:justify-center">
+    <div className="bg-backgroundExercice min-h-screen bg-cover bg-center flex flex-col md:items-center md:justify-center ">
       {/* Wrapper to center content */}
-      <div className="w-full max-w-5xl p-5">
+      <div className="w-full max-w-5xl pt-20">
         {/* Name Section */}
         <div className="flex justify-center mb-3 md:mb-5"> {/* Center the name */}
           <h1 className="text-2xl md:text-4xl font-bold text-white">{exercise.name}</h1>
