@@ -10,13 +10,13 @@ const Home = () => {
   };
 
   return (
-    <section className="min-h-screen bg-home-bg bg-cover bg-center flex items-center justify-center w-full">
+    <section className="h-screen bg-home-bg bg-cover bg-center flex items-center justify-center w-full">
       <div className="w-full">
         <Exercise />
 
         {/* Floating Button to toggle the Chat */}
         <div
-          className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg'
+          className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg hover:scale-110'
           onClick={toggleChat} 
         >
           

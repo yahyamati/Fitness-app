@@ -89,7 +89,7 @@ const Navbar = () => {
           <Link to="/" onClick={() => setIsOpen(false)}>
             <img src="/logo.png" alt="logo" className="w-[60px] h-[60px] " />
           </Link>
-          <Link to="/about" className="text-lg" onClick={() => setIsOpen(false)}>
+          <Link to="/" className="text-lg" onClick={() => setIsOpen(false)}>
             Home
           </Link>
           <Link to="/contact" className="text-lg" onClick={() => setIsOpen(false)}>
