@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <section className="h-screen bg-home-bg bg-cover bg-center flex items-center justify-center w-full">
-      <div className="w-full">
+      <div className="w-full">  
         <Exercise />
 
         {/* Floating Button to toggle the Chat */}

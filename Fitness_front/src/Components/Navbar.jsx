@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, i18n } = useTranslation(); // Add translation hook
 
   const escFunction = useCallback(
     (event) => {
@@ -25,6 +27,11 @@ const Navbar = () => {
     };
   }, [isOpen, escFunction]);
 
+  // Function to handle language switching
+  const handleLanguageChange = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <nav className="fixed z-50 flex flex-row w-full top-0 shadow-md bg-navbar justify-between">
       {/* Logo Section */}
@@ -38,20 +45,33 @@ const Navbar = () => {
       <div className="hidden md:!flex mr-10 text-white">
         <ul className="flex flex-row text-sm space-x-4 items-center">
           <li className="px-2 py-2 hover:text-cyan-500  rounded-lg">
-            <Link to="/">Home</Link>
+            <Link to="/">{t('Home')}</Link>
           </li>
           <li className="px-2 py-2 hover:text-cyan-500  rounded-lg">
-            <Link to="/contact">Exercise</Link>
+            <Link to="/contact">{t('Exercise')}</Link>
           </li>
         </ul>
       </div>
 
-      {/* Sign In Button */}
-      <div className="flex items-center mr-8">
-        
-          <button className="px-4 py-2 text-white hover:text-cyan-500 ">
-            Sign In
-          </button>
+      {/* Language Switcher */}
+      <div className="flex items-center mr-8 space-x-4 ">
+        <button
+          onClick={() => handleLanguageChange('en')}
+          className="text-white hover:text-cyan-500"
+        >
+          EN
+        </button>
+        <button
+          onClick={() => handleLanguageChange('fr')}
+          className="text-white hover:text-cyan-500"
+        >
+          FR
+        </button>
+
+        {/* Sign In Button */}
+        <button className="px-4 py-2 text-white hover:text-cyan-500 ">
+          {t('Sign In')}
+        </button>
       </div>
 
       {/* Hamburger Icon */}
