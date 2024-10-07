@@ -111,7 +111,7 @@ const Chat: React.FC = () => {
 
     return (
   <div className="bg-customGray h-[500px] flex flex-col justify-between p-3">
-   <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide pb-5">
+    <div className="flex-1 overflow-y-auto space-y-4 pb-5 scrollbar-hide ">
       {chatHistory.map((chat, index) => (
         <div
           key={index}
