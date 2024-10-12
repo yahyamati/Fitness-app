@@ -1,4 +1,3 @@
-// ChatController.java
 package com.fitness.backend_spring.controller;
 
 import com.fitness.backend_spring.model.ChatMessage;
@@ -37,15 +36,33 @@ public class ChatController {
     public Mono<Map<String, String>> handleMessage(@RequestBody ChatMessage chatMessage) {
         try {
             if (step < questions.length) {
-                String key = switch (step) {
-                    case 0 -> "gender";
-                    case 1 -> "experience";
-                    case 2 -> "weight";
-                    case 3 -> "workoutPart";
-                    default -> "";
-                };
-                userData.put(key, chatMessage.getText());
-    
+                String userInput = chatMessage.getText().trim().toLowerCase();
+
+                // Validate input based on the question
+                switch (step) {
+                    case 0 -> {
+                        if (!userInput.equals("male") && !userInput.equals("female")) {
+                            return Mono.just(Map.of("message", "Invalid input. Please answer with Male or Female."));
+                        }
+                        userData.put("gender", userInput);
+                    }
+                    case 1 -> {
+                        if (!userInput.equals("beginner") && !userInput.equals("intermediate") && !userInput.equals("advanced")) {
+                            return Mono.just(Map.of("message", "Invalid input. Please choose from Beginner, Intermediate, or Advanced."));
+                        }
+                        userData.put("experience", userInput);
+                    }
+                    case 2 -> {
+                        try {
+                            Double.parseDouble(userInput);
+                            userData.put("weight", userInput);
+                        } catch (NumberFormatException e) {
+                            return Mono.just(Map.of("message", "Invalid input. Please enter a valid number for weight."));
+                        }
+                    }
+                    case 3 -> userData.put("workoutPart", userInput);
+                }
+
                 step++;
                 if (step < questions.length) {
                     return Mono.just(Map.of("message", questions[step]));
@@ -57,7 +74,7 @@ public class ChatController {
                 return Mono.just(Map.of("message", "All questions have been answered. Please restart the session."));
             }
         } catch (Exception e) {
-            System.err.println("Error in handleMessage: " + e.getMessage());
+            e.printStackTrace();
             return Mono.just(Map.of("message", "An error occurred while processing your request."));
         }
     }
@@ -72,13 +89,11 @@ public class ChatController {
             return Mono.just("Please answer all questions before getting results.");
         }
     }
-    
-
 
     @PostMapping("/restart")
     public Mono<String> restart() {
         step = 0;
         userData.clear();
-        return Mono.just("Session restarted. " + questions[step]);
+        return Mono.just( questions[step]);
     }
 }

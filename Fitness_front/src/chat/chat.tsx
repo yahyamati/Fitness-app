@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ChatMessage } from './types';
+import { FaRedo } from 'react-icons/fa';
 
 const Chat: React.FC = () => {
     const [message, setMessage] = useState<string>('');
@@ -8,14 +9,17 @@ const Chat: React.FC = () => {
     const [step, setStep] = useState<number>(0);
     const [userData, setUserData] = useState<{ gender?: string; experience?: string; weight?: string; workoutPart?: string }>({});
     const [questions, setQuestions] = useState<string[]>([]);
-    const [resultsFetched, setResultsFetched] = useState<boolean>(false); // State to track if results were fetched
+    const [resultsFetched, setResultsFetched] = useState<boolean>(false);
+    const [isRestartVisible, setIsRestartVisible] = useState<boolean>(false);
 
-    // Fetch questions from backend when the component mounts
+    // Fetch questions from the backend when the component mounts
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/chat/questions');
                 setQuestions(response.data);
+               
+
                 // Add the first question to the chat history
                 const initialQuestion: ChatMessage = { sender: 'gpt', text: response.data[0] };
                 setChatHistory([initialQuestion]);
@@ -34,44 +38,41 @@ const Chat: React.FC = () => {
         setChatHistory((prevHistory) => [...prevHistory, userMessage]);
         setMessage('');
 
-        // Save user response based on the current step
         const keys = ['gender', 'experience', 'weight', 'workoutPart'];
 
+        // Handle sending user answers and fetching results
         if (step < keys.length) {
-            setUserData((prevData) => ({ ...prevData, [keys[step]]: message }));
-            setStep((prevStep) => prevStep + 1);
-
-            // Check if there is a next question to display
-            if (step + 1 < questions.length) {
-                const nextQuestionMessage: ChatMessage = { sender: 'gpt', text: questions[step + 1] };
-                setChatHistory((prevHistory) => [...prevHistory, nextQuestionMessage]);
-            }
-        } else if (step === keys.length) {
-            // When all questions are answered, send the user data to the backend
             try {
                 const response = await axios.post('http://localhost:8080/api/chat/message', { text: message });
-                console.log('API response:', response.data); // Debugging line
-
-                // Fetch the results from the result endpoint
-                const resultResponse = await axios.get('http://localhost:8080/api/chat/result');
-                console.log('Result API response:', resultResponse.data); // Print the entire response for debugging
-
-                // Assume resultResponse.data contains the suggestions as a string
-                const suggestions: string = resultResponse.data;
-
-                // Check if suggestions are available
-                if (suggestions) {
-                    // Display suggestions from the response
-                    const botMessage: ChatMessage = {
-                        sender: 'gpt',
-                        text: `Here are some suggested exercises:\n${suggestions.split(';').map((suggestion) => `- ${suggestion.trim()}`).join('\n')}`
-                    };
+                
+                if (response.data.message) {
+                    const botMessage: ChatMessage = { sender: 'gpt', text: response.data.message };
                     setChatHistory((prevHistory) => [...prevHistory, botMessage]);
-                    setResultsFetched(true); // Mark that results were fetched
-                } else {
-                    const errorMessage: ChatMessage = { sender: 'gpt', text: 'No exercise suggestions available.' };
-                    setChatHistory((prevHistory) => [...prevHistory, errorMessage]);
+                    setUserData((prevData) => ({ ...prevData, [keys[step]]: message }));
+                    setStep((prevStep) => prevStep + 1);
+                } else if (response.data.suggestions) {
+                    const suggestions = response.data.suggestions.split(';').map((s) => `- ${s.trim()}`).join('\n');
+                    const botMessage: ChatMessage = { sender: 'gpt', text: `Here are some suggested exercises:\n${suggestions}` };
+                    setChatHistory((prevHistory) => [...prevHistory, botMessage]);
+                    setResultsFetched(true);
+                    setIsRestartVisible(true);
                 }
+            } catch (error) {
+                console.error('Error in handleSend:', error);
+                const errorMessage: ChatMessage = { sender: 'gpt', text: 'Error: Could not process your request.' };
+                setChatHistory((prevHistory) => [...prevHistory, errorMessage]);
+            }
+        } else {
+            // Fetch final result when all steps are completed
+            try {
+                const resultResponse = await axios.get('http://localhost:8080/api/chat/result');
+                const suggestions = resultResponse.data;
+                const botMessage: ChatMessage = suggestions
+                    ? { sender: 'gpt', text: `Here are some suggested exercises:\n${suggestions}` }
+                    : { sender: 'gpt', text: 'No exercise suggestions available.' };
+                setChatHistory((prevHistory) => [...prevHistory, botMessage]);
+                setResultsFetched(true);
+                setIsRestartVisible(true);
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
                 const errorMessage: ChatMessage = { sender: 'gpt', text: 'Error: Could not get exercise suggestions.' };
@@ -80,27 +81,18 @@ const Chat: React.FC = () => {
         }
     };
 
-    const handleRestart = () => {
-        // Reset the states to restart the chat
-        setMessage('');
-        setChatHistory([]);
-        setStep(0);
-        setUserData({});
-        setResultsFetched(false);
-        
-        // Fetch questions again if needed
-        const fetchQuestions = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/chat/questions');
-                setQuestions(response.data);
-                const initialQuestion: ChatMessage = { sender: 'gpt', text: response.data[0] };
-                setChatHistory([initialQuestion]);
-            } catch (error) {
-                console.error('Error fetching questions:', error);
-            }
-        };
-
-        fetchQuestions();
+    const handleRestart = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/api/chat/restart');
+            const restartMessage: ChatMessage = { sender: 'gpt', text: response.data };
+            setChatHistory([restartMessage]);
+            setStep(0);
+            setUserData({});
+            setIsRestartVisible(false);
+            setResultsFetched(false);
+        } catch (err) {
+            console.error('Error restarting session', err);
+        }
     };
 
     return (
@@ -133,7 +125,7 @@ const Chat: React.FC = () => {
                         onClick={handleSend}
                         className="absolute inset-y-0 right-3 flex items-center justify-center text-white"
                     >
-                        {/* Vertical Arrow Icon (resembling ChatGPT's send icon) */}
+                        {/* Vertical Arrow Icon */}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-6 transform rotate--180"
@@ -150,15 +142,15 @@ const Chat: React.FC = () => {
                         </svg>
                     </button>
                 </div>
+                {isRestartVisible && (
+                    <button
+                        onClick={handleRestart}
+                        className="ml-2 m-auto bg-input text-white p-2 rounded-full flex items-center justify-center"
+                    >
+                        <FaRedo />
+                    </button>
+                )}
             </div>
-            {resultsFetched && ( // Show restart button if results have been fetched
-                <button
-                    onClick={handleRestart}
-                    className="mt-4 p-2 bg-blue-500 text-white rounded"
-                >
-                    Restart
-                </button>
-            )}
         </div>
     );
 };

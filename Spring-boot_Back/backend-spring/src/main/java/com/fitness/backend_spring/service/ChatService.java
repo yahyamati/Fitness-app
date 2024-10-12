@@ -25,7 +25,6 @@ public class ChatService {
     }
 
     public Mono<String> getExerciseSuggestions(Map<String, String> userData, String workoutPart) {
-        // Construct the message for the API request
         String suggestionsMessage = String.format(
             "Suggest 5 exercises for a %s, who is %s, weighs %s, and wants to work out %s. " +
             "Without explanation, and give me only how many sets to do.",
@@ -34,12 +33,9 @@ public class ChatService {
             userData.get("weight"),
             workoutPart
         );
-
-        // Log the suggestions message for debugging
-        System.out.println("Suggestions Message: " + suggestionsMessage);
-
+    
         return webClient.post()
-            .uri("/conversationgpt4-2") // Ensure this endpoint is correct
+            .uri("/conversationgpt4-2")
             .header("Content-Type", "application/json")
             .header("x-rapidapi-host", rapidApiHost)
             .header("x-rapidapi-key", rapidApiKey)
@@ -50,20 +46,13 @@ public class ChatService {
                     "top_k", 5
             ))
             .retrieve()
-            .onStatus(status -> status.isError(), response -> {
-                return response.bodyToMono(String.class)
-                    .flatMap(errorResponse -> {
-                        System.err.println("Error response from API: " + errorResponse);
-                        return Mono.error(new RuntimeException("API call failed: " + errorResponse));
-                    });
-            })
-            .bodyToMono(ApiResponse.class) // Ensure the ApiResponse class structure matches the expected response
-            .map(ApiResponse::getResult) // Ensure that the ApiResponse has a method to retrieve the result
-            .doOnSuccess(apiResponse -> System.out.println("API Response: " + apiResponse))
+            .bodyToMono(ApiResponse.class)
+            .map(ApiResponse::getResult)
             .doOnError(e -> {
                 System.err.println("Error fetching suggestions: " + e.getMessage());
-                e.printStackTrace(); // Log the stack trace for debugging
+                e.printStackTrace();
             })
             .onErrorReturn("Error: Could not get exercise suggestions.");
     }
+    
 }
