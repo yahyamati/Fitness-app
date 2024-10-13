@@ -37,23 +37,26 @@ const addExercise = async (req, res) => {
 };
 
 const getExercises = async (req, res) => {
-    const { category } = req.query; // Get category from query parameters
+    const { category } = req.query;
 
     try {
-        // If a category is provided, find exercises by category
-        const query = category ? { category } : {}; // Conditional query
+        // Disable caching
+        res.set('Cache-Control', 'no-store');
+
+        const query = category ? { category } : {};
         const exercises = await ExerciseModel.find(query);
 
-        // Send success response with the exercises
         return res.json({ success: true, exercises });
     } catch (error) {
-        // Handle any errors
         return res.status(500).json({ success: false, message: 'Error fetching exercises', error: error.message });
     }
 };
 
+
 const getCategories = async (req, res) => {
     try {
+
+        res.set('Cache-Control', 'no-store');
         // Get distinct categories from the ExerciseModel
         const categories = await ExerciseModel.distinct('category');
 

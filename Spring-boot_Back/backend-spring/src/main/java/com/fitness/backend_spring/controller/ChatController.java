@@ -26,7 +26,7 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    // New endpoint to get questions
+   
     @GetMapping("/questions")
     public Mono<String[]> getQuestions() {
         return Mono.just(questions);
@@ -38,7 +38,7 @@ public class ChatController {
             if (step < questions.length) {
                 String userInput = chatMessage.getText().trim().toLowerCase();
 
-                // Validate input based on the question
+                
                 switch (step) {
                     case 0 -> {
                         if (!userInput.equals("male") && !userInput.equals("female")) {

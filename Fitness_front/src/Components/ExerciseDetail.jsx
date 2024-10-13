@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Chat from '../chat/Chat'; 
+import Chat from '../chat/chat'; 
 import axios from 'axios';
 
 const ExerciseDetail = () => {
