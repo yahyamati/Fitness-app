@@ -10,9 +10,9 @@ const Chat: React.FC = () => {
     const [userData, setUserData] = useState<{ gender?: string; experience?: string; weight?: string; workoutPart?: string }>({});
     const [questions, setQuestions] = useState<string[]>([]);
     const [resultsFetched, setResultsFetched] = useState<boolean>(false);
-    const [isRestartVisible, setIsRestartVisible] = useState<boolean>(false);
+    
 
-    // Fetch questions from the backend when the component mounts
+    
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
@@ -20,7 +20,7 @@ const Chat: React.FC = () => {
                 setQuestions(response.data);
                
 
-                // Add the first question to the chat history
+                
                 const initialQuestion: ChatMessage = { sender: 'gpt', text: response.data[0] };
                 setChatHistory([initialQuestion]);
             } catch (error) {
@@ -40,7 +40,7 @@ const Chat: React.FC = () => {
 
         const keys = ['gender', 'experience', 'weight', 'workoutPart'];
 
-        // Handle sending user answers and fetching results
+        
         if (step < keys.length) {
             try {
                 const response = await axios.post('http://localhost:8080/api/chat/message', { text: message });
@@ -55,7 +55,7 @@ const Chat: React.FC = () => {
                     const botMessage: ChatMessage = { sender: 'gpt', text: `Here are some suggested exercises:\n${suggestions}` };
                     setChatHistory((prevHistory) => [...prevHistory, botMessage]);
                     setResultsFetched(true);
-                    setIsRestartVisible(true);
+                   
                 }
             } catch (error) {
                 console.error('Error in handleSend:', error);
@@ -63,7 +63,7 @@ const Chat: React.FC = () => {
                 setChatHistory((prevHistory) => [...prevHistory, errorMessage]);
             }
         } else {
-            // Fetch final result when all steps are completed
+            
             try {
                 const resultResponse = await axios.get('http://localhost:8080/api/chat/result');
                 const suggestions = resultResponse.data;
@@ -72,7 +72,7 @@ const Chat: React.FC = () => {
                     : { sender: 'gpt', text: 'No exercise suggestions available.' };
                 setChatHistory((prevHistory) => [...prevHistory, botMessage]);
                 setResultsFetched(true);
-                setIsRestartVisible(true);
+               
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
                 const errorMessage: ChatMessage = { sender: 'gpt', text: 'Error: Could not get exercise suggestions.' };
@@ -88,7 +88,6 @@ const Chat: React.FC = () => {
             setChatHistory([restartMessage]);
             setStep(0);
             setUserData({});
-            setIsRestartVisible(false);
             setResultsFetched(false);
         } catch (err) {
             console.error('Error restarting session', err);
@@ -142,14 +141,14 @@ const Chat: React.FC = () => {
                         </svg>
                     </button>
                 </div>
-                {isRestartVisible && (
+                
                     <button
                         onClick={handleRestart}
                         className="ml-2 m-auto bg-input text-white p-2 rounded-full flex items-center justify-center"
                     >
                         <FaRedo />
                     </button>
-                )}
+                
             </div>
         </div>
     );
