@@ -1,39 +1,74 @@
 package com.FitnessApp_Authentification.Auth_micro_service.service;
 
-import java.lang.StackWalker.Option;
-import java.util.Optional;
-
+import com.FitnessApp_Authentification.Auth_micro_service.model.User;
+import com.FitnessApp_Authentification.Auth_micro_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.FitnessApp_Authentification.Auth_micro_service.repository.UserRepo;
-import com.FitnessApp_Authentification.Auth_micro_service.security.JwtUtil;
-
-import model.entity.User;
-
-
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
-public class userService {
+public class UserService implements UserDetailsService {
 
+    @Autowired
+    private UserRepository userRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    public void registerUser(String name, String email, String password) {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password)); // Hash the password before saving
+        userRepository.save(user);
+    }
 
-   @Autowired
-   private UserRepo user_repo;
+    public UserDetails authenticateUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) { // Verify the password
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getEmail())
+                    .password(user.getPassword())
+                    .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                    .build();
+        }
+        return null; // Return null if authentication fails
+    }
 
-   @Autowired
-   private JwtUtil jwtUtil;
+    public String getUserIdByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null ? user.getId() : null; 
+    }
 
-   public String authenticate(String username, String password) {
-      User userAth = this.user_repo.findByUsername(username);
-      if (userAth.getPassword().equals(password)) {
-      return jwtUtil.generateToken(username);
-   } else {
-      return "NOTHING";}
-   }
+    public UserDetails loadUserById(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getEmail())
+                    .password(user.getPassword())
+                    .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                    .build();
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
+    }
 
-
-
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                .build();
+    }
 }

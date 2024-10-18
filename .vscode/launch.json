@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AuthMicroServiceApplication",
+            "request": "launch",
+            "mainClass": "com.FitnessApp_Authentification.Auth_micro_service.AuthMicroServiceApplication",
+            "projectName": "Auth-micro-service"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
