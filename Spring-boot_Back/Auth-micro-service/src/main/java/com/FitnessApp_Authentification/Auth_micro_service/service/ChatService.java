@@ -1,6 +1,6 @@
-package com.fitness.backend_spring.service;
+package com.FitnessApp_Authentification.Auth_micro_service.service;
 
-import com.fitness.backend_spring.model.ApiResponse;
+import com.FitnessApp_Authentification.Auth_micro_service.model.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

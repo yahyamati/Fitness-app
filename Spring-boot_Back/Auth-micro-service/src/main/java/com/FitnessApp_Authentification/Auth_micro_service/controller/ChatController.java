@@ -1,14 +1,17 @@
-package com.fitness.backend_spring.controller;
+package com.FitnessApp_Authentification.Auth_micro_service.controller;
 
-import com.fitness.backend_spring.model.ChatMessage;
-import com.fitness.backend_spring.service.ChatService;
+
+import com.FitnessApp_Authentification.Auth_micro_service.model.ChatMessage;
+import com.FitnessApp_Authentification.Auth_micro_service.service.ChatService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/chat")
 public class ChatController {
 

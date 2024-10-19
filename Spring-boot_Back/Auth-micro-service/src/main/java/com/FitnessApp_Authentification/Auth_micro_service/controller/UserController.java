@@ -8,7 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.FitnessApp_Authentification.Auth_micro_service.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -19,24 +23,35 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        // Handle user existence check here if needed
-        userService.registerUser(user.getName(), user.getEmail(), user.getPassword());
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            userService.registerUser(user.getName(), user.getEmail(), user.getPassword());
+            response.put("success", true);
+            response.put("message", "User registered successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Registration failed: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        // Authenticate user and get UserDetails
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
         UserDetails authenticatedUser = userService.authenticateUser(user.getEmail(), user.getPassword());
-        
-        if (authenticatedUser != null) { // Check if authenticatedUser is not null
-            // You might want to extract the userId from the authenticatedUser
+
+        if (authenticatedUser != null) {
             String userId = userService.getUserIdByEmail(user.getEmail());
-            String token = jwtUtil.generateToken(authenticatedUser, userId); // Pass userId to generateToken
-            return ResponseEntity.ok(token);
+            String token = jwtUtil.generateToken(authenticatedUser, userId);
+            response.put("success", true);
+            response.put("token", token);
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            response.put("success", false);
+            response.put("message", "Invalid credentials");
+            return ResponseEntity.status(401).body(response);
         }
     }
 }

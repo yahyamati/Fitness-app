@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "BackendSpringApplication",
+            "request": "launch",
+            "mainClass": "com.fitness.backend_spring.BackendSpringApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "AuthMicroServiceApplication",
             "request": "launch",
             "mainClass": "com.FitnessApp_Authentification.Auth_micro_service.AuthMicroServiceApplication",

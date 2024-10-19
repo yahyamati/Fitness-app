@@ -39,13 +39,16 @@
 			<scope>provided</scope> <!-- Mark it as provided because the servlet container will provide it -->
 		</dependency>
 
-		
-
-
-		<!-- Spring Web Starter -->
+		<!-- Spring Web Starter (for traditional MVC) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Spring WebFlux Starter (for reactive programming) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
 		<!-- Lombok for reducing boilerplate code -->

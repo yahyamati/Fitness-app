@@ -1,5 +1,5 @@
 // ApiResponse.java
-package com.fitness.backend_spring.model;
+package com.FitnessApp_Authentification.Auth_micro_service.model;
 
 import lombok.Data;
 

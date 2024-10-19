@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())  // Disabling CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/login", "/api/users/register").permitAll()
+                .requestMatchers("/api/users/login", "/api/users/register", "/api/chat/questions","/api/chat/message","/api/chat/result","/api/chat/restart").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
