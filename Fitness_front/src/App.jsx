@@ -7,6 +7,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './translition/langue';
 import Registration from './Components/Registration';
 import { useState } from 'react';
+import Note from './Components/note';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -21,10 +22,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/exercise/:name" element={<ExerciseDetail />} />
-          
+          <Route path="/note" element={<Note />} />
+
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </I18nextProvider>
   );

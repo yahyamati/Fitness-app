@@ -35,7 +35,7 @@ const Registration = ({ setShowLogin }) => {
 
       // Handle success response
       if (response && response.data && response.data.success) {
-        console.log(response.data.token); // Token should be available here
+        console.log(response.data.token); 
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token); // Save token if available
         setShowLogin(false); // Close login form
