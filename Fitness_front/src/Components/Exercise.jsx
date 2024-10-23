@@ -1,41 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom'; 
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+
+import { StoreContext } from '../Context/StoreContext';
 
 
 const Exercise = () => {
 
   const { t } = useTranslation(); 
+  const {exercisesByCategory} = useContext(StoreContext);
   
-  const [exercisesByCategory, setExercisesByCategory] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const response = await axios.get('http://localhost:4000/api/Exercise/get');
-        if (response.data.success && Array.isArray(response.data.exercises)) {
-          const groupedExercises = response.data.exercises.reduce((acc, exercise) => {
-            const { category } = exercise;
-            if (!acc[category]) acc[category] = [];
-            acc[category].push(exercise);
-            return acc;
-          }, {});
-
-          setExercisesByCategory(groupedExercises);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching exercises:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchExercises();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="pt-10">

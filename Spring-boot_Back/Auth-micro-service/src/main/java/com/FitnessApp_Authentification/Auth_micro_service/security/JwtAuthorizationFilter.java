@@ -19,7 +19,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Injecting UserService to load user details
+    
     @Autowired
     private UserService userService;
 
@@ -33,14 +33,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);  // Remove "Bearer " from the token
             try {
                 // Extract user ID from the token
-                Long userId = jwtUtil.extractUserId(token); // Ensure this returns String or convert to Long
+                Long userId = jwtUtil.extractUserId(token); 
 
                 // Retrieve UserDetails based on userId
-                UserDetails userDetails = userService.loadUserById(userId); // Assuming loadUserById returns UserDetails
+                UserDetails userDetails = userService.loadUserById(userId); 
 
-                // Validate the token
+                
                 if (userDetails != null && jwtUtil.isTokenValid(token, userDetails)) {
-                    // Set userId attribute in the request for further processing
+                    
                     request.setAttribute("userId", userId);
                 } else {
                     // Token is invalid, return unauthorized response
@@ -55,7 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         }
 
-        // Proceed with the next filter in the chain
+        
         filterChain.doFilter(request, response);
     }
 }

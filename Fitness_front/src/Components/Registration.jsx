@@ -30,21 +30,21 @@ const Registration = ({ setShowLogin }) => {
 
     try {
       const response = await axios.post(newUrl, data);
-      // Log the full response for debugging
+      //
       console.log(response);
 
-      // Handle success response
+      
       if (response && response.data && response.data.success) {
         console.log(response.data.token); 
         setToken(response.data.token);
-        localStorage.setItem("token", response.data.token); // Save token if available
-        setShowLogin(false); // Close login form
-        alert(response.data.message || "Success!"); // Show success message if available
+        localStorage.setItem("token", response.data.token); 
+        setShowLogin(false); 
+        alert(response.data.message || "Success!"); 
       } else {
-        // Handle failure if success is not true
+       
         const message = response?.data?.message || "Something went wrong. Please try again.";
         console.error(message);
-        alert(message); // Alert the error message
+        alert(message); 
       }
     } catch (error) {
       console.error(error);

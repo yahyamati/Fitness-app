@@ -30,7 +30,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // New method to extract user ID
+    
     public Long extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", Long.class));
     }
@@ -42,7 +42,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails, String userId) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("userId", userId);  // Include userId in claims
+        extraClaims.put("userId", userId);  
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
@@ -57,10 +57,10 @@ public class JwtUtil {
     ) {
         return Jwts
                 .builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }

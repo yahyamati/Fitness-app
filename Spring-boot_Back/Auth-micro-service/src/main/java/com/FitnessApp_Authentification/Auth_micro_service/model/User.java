@@ -7,13 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private String id;  // Change Long to String for MongoDB ObjectId
+    private String id;  
 
     private String name;
     private String email;
     private String password;
 
-    // Getters and Setters
+   
 
     public String getId() {
         return id;

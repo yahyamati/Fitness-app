@@ -4,13 +4,13 @@ import Chat from '../chat/chat';
 import axios from 'axios';
 
 const ExerciseDetail = () => {
-  const { name } = useParams(); // Get the exercise name from the URL
-  const [exercise, setExercise] = useState(null); // State to hold exercise data
-  const [loading, setLoading] = useState(true); // State for loading
-  const [showChat, setShowChat] = useState(false); // State to toggle Chat visibility
+  const { name } = useParams(); 
+  const [exercise, setExercise] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [showChat, setShowChat] = useState(false); 
 
   const toggleChat = () => {
-    setShowChat(!showChat); // Toggle chat visibility when button is clicked
+    setShowChat(!showChat); 
   };
 
 
@@ -21,7 +21,7 @@ const ExerciseDetail = () => {
         if (response.data.success && Array.isArray(response.data.exercises)) {
           const foundExercise = response.data.exercises.find((ex) => ex.name === name);
           if (foundExercise) {
-            setExercise(foundExercise); // Set the found exercise
+            setExercise(foundExercise); 
           } else {
             console.error('Exercise not found');
           }
@@ -36,11 +36,7 @@ const ExerciseDetail = () => {
     };
 
     fetchExercise();
-  }, [name]); // Dependency on name
-
-  if (loading) {
-    return <div className="text-center text-xl text-gray-600">Loading...</div>;
-  }
+  }, [name]); 
 
   if (!exercise) {
     return <div className="text-center text-xl text-red-500">Exercise not found</div>;
@@ -48,16 +44,16 @@ const ExerciseDetail = () => {
 
   return (
     <div className="bg-backgroundExercice min-h-screen bg-cover bg-center flex flex-col md:items-center md:justify-center ">
-      {/* Wrapper to center content */}
+     
       <div className="w-full max-w-5xl pt-20">
         {/* Name Section */}
-        <div className="flex justify-center mb-3 md:mb-5"> {/* Center the name */}
+        <div className="flex justify-center mb-3 md:mb-5"> 
           <h1 className="text-2xl md:text-4xl font-bold text-white">{exercise.name}</h1>
         </div>
   
-        {/* Video Section */}
+        
         <div className="relative w-full flex justify-center items-center mb-3 md:mb-5">
-          {/* Adjusts size and centering */}
+          
           {exercise.video ? (
             <video
               className="w-full max-w-4xl h-auto rounded-lg"

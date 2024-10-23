@@ -6,7 +6,7 @@ import cors from 'cors'
 import ExerciseRouter from './routes/ExerciseRoute.js'
 
 
-dotenv.config(); // Load environment variables
+dotenv.config(); 
 
 // App config
 const app = express();
@@ -24,7 +24,7 @@ app.use('/api/Exercise',ExerciseRouter)
 
 
 
-// DB connection
+
 connectDB();
 
 // Ping endpoint to keep the backend awake
@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-// Error handling middleware
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'An error occurred', error: err.message });

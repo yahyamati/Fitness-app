@@ -24,20 +24,20 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password)); // Hash the password before saving
+        user.setPassword(passwordEncoder.encode(password)); 
         userRepository.save(user);
     }
 
     public UserDetails authenticateUser(String email, String password) {
         User user = userRepository.findByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) { // Verify the password
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) { 
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getEmail())
                     .password(user.getPassword())
-                    .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                    .authorities(Collections.emptyList()) 
                     .build();
         }
-        return null; // Return null if authentication fails
+        return null; 
     }
 
     public String getUserIdByEmail(String email) {
@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getEmail())
                     .password(user.getPassword())
-                    .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                    .authorities(Collections.emptyList()) 
                     .build();
         } else {
             throw new UsernameNotFoundException("User not found");
@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(Collections.emptyList()) // Replace with your roles if necessary
+                .authorities(Collections.emptyList()) 
                 .build();
     }
 }
