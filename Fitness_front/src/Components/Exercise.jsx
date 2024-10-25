@@ -66,6 +66,11 @@ const Exercise = () => {
           <p className="text-gray-300 mb-10 text-lg max-w-md">
             {t("In order to stay in shape and stay healthy, it is necessary to take a variety of steps, including a balanced diet and regular exercise.")}
           </p>
+          <button
+            className="px-6 py-2 text-white bg-[#FF921B] rounded transition duration-200"
+          >
+            {t("Start")}
+          </button>
         </div>
       </header>
 
@@ -105,14 +110,14 @@ const Exercise = () => {
       </div>
 
       <div
-        className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg hover:scale-110'
+        className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg hover:scale-110 z-50'
         onClick={toggleChat}
       >
         💬
       </div>
 
       {showChat && (
-        <div className="fixed bottom-20 right-5 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="fixed bottom-20 right-5 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden z-50">
           <Chat />
         </div>
       )}

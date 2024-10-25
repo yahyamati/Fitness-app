@@ -5,6 +5,7 @@ const resources = {
   en: {
     translation: {
       "Planfit Exercises Guide": "Planfit Exercises Guide",
+      "Start":"Start",
       "Sign In": "Sign In",
       "Login": 'Login',
       "Sign Up": 'Sign Up',
@@ -35,6 +36,7 @@ const resources = {
   fr: {
     translation: {
       "Planfit Exercises Guide": "Guide des exercices Planfit",
+      "Start":"Commencer",
       "Sign In": "Inscription",
       "Login": 'Connexion',
       "Sign Up": 'Inscription',

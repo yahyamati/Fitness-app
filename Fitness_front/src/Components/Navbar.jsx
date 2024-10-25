@@ -69,7 +69,7 @@ const Navbar = ({ setShowLogin }) => {
 
         {!token ? 
           <button 
-            className="px-4 py-2 text-white bg-[#FF921B] rounded hover:bg-cyan-400 transition duration-200"
+            className="px-4 py-2 text-white bg-[#FF921B] rounded transition duration-200"
             onClick={() => setShowLogin(true)} 
           >
             {t('Sign In')}
