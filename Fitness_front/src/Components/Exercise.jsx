@@ -45,7 +45,7 @@ const Exercise = () => {
     {
       image: assets.run, 
       title: "Fitness Running",
-      description: "Weight training is a common type of strength training for developing the strength, size of skeletal muscles and maintenance of strength."
+      description: "Running is a method of dynamic terrestrial locomotion allowing humans and other animals to move quickly and rapidly on foot with great efficiency."
     },
   ];
 
@@ -67,7 +67,7 @@ const Exercise = () => {
         </div>
       </header>
 
-      <div className="relative flex items-center justify-center h-auto">
+      <div className="relative flex items-center justify-center h-[60vh] md:h-[110vh]">
         <img
           src={assets.gyminverse}
           alt="Gym Background"
