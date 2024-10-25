@@ -3,12 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = ({ setShowLogin }) => {
   const { token, setToken } = useContext(StoreContext);
   const [isOpen, setIsOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate(); 
+  const [currentLanguage, setCurrentLanguage] = useState('en'); 
 
   const escFunction = useCallback(
     (event) => {
@@ -34,6 +37,7 @@ const Navbar = ({ setShowLogin }) => {
 
   const handleLanguageChange = (lng) => {
     i18n.changeLanguage(lng);
+    setCurrentLanguage(lng); 
   };
 
   return (
@@ -45,22 +49,27 @@ const Navbar = ({ setShowLogin }) => {
       </Link>
 
       <div className="flex items-center space-x-6 mr-6">
-        <button
-          onClick={() => handleLanguageChange('en')}
-          className="text-white hover:text-cyan-300 transition duration-200"
-        >
-          EN
-        </button>
-        <button
-          onClick={() => handleLanguageChange('fr')}
-          className="text-white hover:text-cyan-300 transition duration-200"
-        >
-          FR
-        </button>
+        {currentLanguage === 'en' ? (
+          <button
+            onClick={() => handleLanguageChange('fr')}
+            className="flex items-center text-white hover:text-cyan-300 transition duration-200"
+          >
+            <FontAwesomeIcon icon={faGlobe} className="mr-1" />
+            FR
+          </button>
+        ) : (
+          <button
+            onClick={() => handleLanguageChange('en')}
+            className="flex items-center text-white hover:text-cyan-300 transition duration-200"
+          >
+            <FontAwesomeIcon icon={faGlobe} className="mr-1" />
+            EN
+          </button>
+        )}
 
         {!token ? 
           <button 
-            className="px-4 py-2 text-white bg-cyan-500 rounded hover:bg-cyan-400 transition duration-200"
+            className="px-4 py-2 text-white bg-[#FF921B] rounded hover:bg-cyan-400 transition duration-200"
             onClick={() => setShowLogin(true)} 
           >
             {t('Sign In')}

@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { StoreContext } from '../context/StoreContext';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
 import { assets } from '../assets/assets';
 
 const Exercise = () => {
   const { exercisesByCategory, category } = useContext(StoreContext);
   const [showChat, setShowChat] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const toggleChat = () => {
     setShowChat(!showChat);
@@ -19,33 +21,33 @@ const Exercise = () => {
   const exerciseData = [
     {
       image: assets.weight_lifting, 
-      title: "Weight Loss",
-      description: "Weight loss can have causes that aren't due to underlying disease. Examples include dieting, exercise, malnutrition or lack of access to food."
+      title: t("Weight Loss"),
+      description: t("Weight loss can have causes that aren't due to underlying disease. Examples include dieting, exercise, malnutrition or lack of access to food.")
     },
     {
       image: assets.yoga, 
-      title: "Classic Yoga",
-      description: 'The term "yoga" in the Western world often denotes a modern form of Hatha yoga and a posture-based physical fitness, stress-relief.'
+      title: t("Classic Yoga"),
+      description: t("The term 'yoga' in the Western world often denotes a modern form of Hatha yoga and a posture-based physical fitness, stress-relief.")
     },
     {
       image: assets.cyclisme, 
-      title: "Cycling",
-      description: "Cycling, also, when on a two-wheeled bicycle, called bicycling or biking, is the use of cycles for transport, recreation, exercise or sport."
+      title: t("Cycling"),
+      description: t("Cycling, also, when on a two-wheeled bicycle, called bicycling or biking, is the use of cycles for transport, recreation, exercise or sport.")
     },
     {
       image: assets.muscle, 
-      title: "Body Building",
-      description: "Bodybuilding is the use of progressive resistance exercise to control and develop one's muscles by muscle hypertrophy for aesthetic purposes."
+      title: t("Body Building"),
+      description: t("Bodybuilding is the use of progressive resistance exercise to control and develop one's muscles by muscle hypertrophy for aesthetic purposes.")
     },
     {
       image: assets.alter, 
-      title: "Musculation",
-      description: "Weight training is a common type of strength training for developing the strength, size of skeletal muscles and maintenance of strength."
+      title: t("Musculation"),
+      description: t("Weight training is a common type of strength training for developing the strength, size of skeletal muscles and maintenance of strength.")
     },
     {
       image: assets.run, 
-      title: "Fitness Running",
-      description: "Running is a method of dynamic terrestrial locomotion allowing humans and other animals to move quickly and rapidly on foot with great efficiency."
+      title: t("Fitness Running"),
+      description: t("Running is a method of dynamic terrestrial locomotion allowing humans and other animals to move quickly and rapidly on foot with great efficiency.")
     },
   ];
 
@@ -59,15 +61,15 @@ const Exercise = () => {
         />
         <div className="relative z-10 text-left p-20 md:p-20">
           <h1 className="text-4xl md:text-7xl text-white mb-4 max-w-lg">
-            Keep your body healthy & in shape
+            {t("Keep your body healthy & in shape")}
           </h1>
           <p className="text-gray-300 mb-10 text-lg max-w-md">
-            In order to stay in shape and stay healthy, it is necessary to take a variety of steps, including a balanced ...
+            {t("In order to stay in shape and stay healthy, it is necessary to take a variety of steps, including a balanced diet and regular exercise.")}
           </p>
         </div>
       </header>
 
-      <div className="relative flex items-center justify-center h-[60vh] md:h-[110vh]">
+      <div className="relative flex items-center justify-center h-auto">
         <img
           src={assets.gyminverse}
           alt="Gym Background"
@@ -86,7 +88,7 @@ const Exercise = () => {
       </div>
 
       <h1 className="font-bold text-4xl text-white text-center mb-20">
-        Plan fit Exercises Guide
+        {t("Planfit Exercises Guide")}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 px-5">
         {category.categories.map((cat) => (

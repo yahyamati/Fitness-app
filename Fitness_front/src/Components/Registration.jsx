@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { assets } from '../assets/assets';
-import { StoreContext } from '../Context/StoreContext';
+import { useTranslation } from 'react-i18next';
+import { StoreContext } from '../context/StoreContext';
 
 const Registration = ({ setShowLogin }) => {
   const { setToken } = useContext(StoreContext);
+  const { t } = useTranslation(); 
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
     name: '',
@@ -30,25 +32,22 @@ const Registration = ({ setShowLogin }) => {
 
     try {
       const response = await axios.post(newUrl, data);
-      //
       console.log(response);
 
-      
       if (response && response.data && response.data.success) {
         console.log(response.data.token); 
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token); 
         setShowLogin(false); 
-        alert(response.data.message || "Success!"); 
+        alert(response.data.message || t("Success!")); 
       } else {
-       
-        const message = response?.data?.message || "Something went wrong. Please try again.";
+        const message = response?.data?.message || t("Something went wrong. Please try again.");
         console.error(message);
         alert(message); 
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred while processing your request.");
+      alert(t("An error occurred while processing your request.")); 
     }
   }
 
@@ -56,7 +55,7 @@ const Registration = ({ setShowLogin }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className='max-w-md mx-auto p-6 bg-white shadow-md rounded-lg'>
         <div className='flex justify-between items-center mb-4'>
-          <h2 className='text-2xl font-semibold'>{currState}</h2>
+          <h2 className='text-2xl font-semibold'>{t(currState)}</h2> 
           <img
             onClick={() => setShowLogin(false)}
             src={assets.crossIcon}
@@ -71,7 +70,7 @@ const Registration = ({ setShowLogin }) => {
               name='name'
               onChange={onChangeHandler}
               value={data.name}
-              placeholder='Your name'
+              placeholder={t('Your name')} 
               className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
               required
             />
@@ -81,7 +80,7 @@ const Registration = ({ setShowLogin }) => {
             name='email'
             onChange={onChangeHandler}
             value={data.email}
-            placeholder='Your email'
+            placeholder={t('Your email')} 
             className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
             required
           />
@@ -90,7 +89,7 @@ const Registration = ({ setShowLogin }) => {
             name='password'
             onChange={onChangeHandler}
             value={data.password}
-            placeholder='Password'
+            placeholder={t('Password')}
             className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
             required
           />
@@ -98,7 +97,7 @@ const Registration = ({ setShowLogin }) => {
             className='w-full mt-6 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300'
             type='submit'
           >
-            {currState === 'Sign Up' ? 'Create account' : 'Login'}
+            {currState === 'Sign Up' ? t('createAccount') : t('Login')} 
           </button>
           <div className='mt-4 flex items-center'>
             <input
@@ -107,27 +106,27 @@ const Registration = ({ setShowLogin }) => {
               required
             />
             <p className='text-sm text-gray-600'>
-              By continuing, I agree to the terms of use & privacy policy
+              {t("By continuing, I agree to the terms of use & privacy policy")} 
             </p>
           </div>
           {currState === 'Login' ? (
             <p className='mt-4 text-sm text-gray-600'>
-              Create a new account
+              {t("Create a new account")}
               <span
                 onClick={() => setCurrState('Sign Up')}
                 className='text-blue-500 cursor-pointer ml-1'
               >
-                Click here
+                {t("Click here")} 
               </span>
             </p>
           ) : (
             <p className='mt-4 text-sm text-gray-600'>
-              Already have an account?
+              {t("Already have an account?")}
               <span
                 onClick={() => setCurrState('Login')}
                 className='text-blue-500 cursor-pointer ml-1'
               >
-                Login here
+                {t("Login here")} 
               </span>
             </p>
           )}
