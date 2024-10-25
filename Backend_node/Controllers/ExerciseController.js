@@ -1,4 +1,7 @@
 import ExerciseModel from "../Models/ExerciseModel.js";
+import Category from "../Models/CategoryExercisesModel.js";
+
+
 
 const addExercise = async (req, res) => {
     const { name, category, alternatives } = req.body;
@@ -58,7 +61,7 @@ const getCategories = async (req, res) => {
 
         res.set('Cache-Control', 'no-store');
         
-        const categories = await ExerciseModel.distinct('category');
+        const categories = await Category.find({});
 
        
         return res.json({ success: true, categories });
@@ -70,4 +73,23 @@ const getCategories = async (req, res) => {
 
 
 
-export { addExercise ,getExercises , getCategories};
+const addCategory = async (req , res)=>{
+     const image_url=req.file.path;
+
+
+     const category = new Category({
+        category : req.body.category,
+        image : image_url
+     });
+     try {
+        await category.save();
+        res.json({ success:true , message:'Category added successfully' });
+
+        
+     } catch (error) {
+        res.json({ success:false , message:'failed to add Category' });
+     }
+}
+
+
+export { addExercise ,getExercises , getCategories, addCategory};

@@ -46,7 +46,7 @@ const ExerciseDetail = () => {
     <div className="bg-backgroundExercice min-h-screen bg-cover bg-center flex flex-col md:items-center md:justify-center ">
      
       <div className="w-full max-w-5xl pt-20">
-        {/* Name Section */}
+        
         <div className="flex justify-center mb-3 md:mb-5"> 
           <h1 className="text-2xl md:text-4xl font-bold text-white">{exercise.name}</h1>
         </div>
@@ -68,7 +68,7 @@ const ExerciseDetail = () => {
           )}
         </div>
   
-        {/* Description Section */}
+        
         <div className="p-5 text-white mt-3 md:mt-5">
           <p className="text-lg">
             Here you can add more information about the exercise, like instructions, details, etc.

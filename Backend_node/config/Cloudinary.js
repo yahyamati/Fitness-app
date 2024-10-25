@@ -17,8 +17,15 @@ const storage = new CloudinaryStorage({
         resource_type: 'video' // Specify that we are expecting video files
     },
 });
+const storageImage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'category', 
+       
+    },
+});
 
-// Create a multer instance with file type filtering for videos only
+
 const fileFilter = (req, file, cb) => {
     if (!file.mimetype.startsWith('video/')) {
         return cb(new Error('Invalid video file'), false);
@@ -28,5 +35,6 @@ const fileFilter = (req, file, cb) => {
 
 // Configure multer with storage and file filter
 const Exercise = multer({ storage: storage, fileFilter: fileFilter });
+const Category = multer({ storage: storageImage });
 
-export { Exercise };
+export { Exercise,Category};

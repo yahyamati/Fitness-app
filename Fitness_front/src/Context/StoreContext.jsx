@@ -5,7 +5,12 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
-  const [exercisesByCategory, setExercisesByCategory] = useState({});
+  const [category, setCategory] = useState({ success: false, categories: [] });
+  const [exercisesByCategory, setExercisesByCategory] = useState({ success: false, exercises: [] });
+
+
+
+  
 
 
 
@@ -19,49 +24,61 @@ const StoreContextProvider = (props) => {
     loadData();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Fetch exercises
+  //       const exerciseResponse = await axios.get('http://localhost:4000/api/Exercise/get');
+  //       if (exerciseResponse.data.success && Array.isArray(exerciseResponse.data.exercises)) {
+  //         const groupedExercises = exerciseResponse.data.exercises.reduce((acc, exercise) => {
+  //           const { category } = exercise;
+  //           if (!acc[category]) acc[category] = [];
+  //           acc[category].push(exercise);
+  //           return acc;
+  //         }, {});
 
-  
-  
+  //         setExercisesByCategory(groupedExercises);
+  //       }
+
+        
+  //       const categoryResponse = await axios.get('http://localhost:4000/api/Exercise/getCategory');
+  //       setCategory(categoryResponse.data);
+  //       console.log(categoryResponse.data);
+        
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
-    const fetchExercises = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/Exercise/get');
-        if (response.data.success && Array.isArray(response.data.exercises)) {
-          const groupedExercises = response.data.exercises.reduce((acc, exercise) => {
-            const { category } = exercise;
-            if (!acc[category]) acc[category] = [];
-            acc[category].push(exercise);
-            return acc;
-          }, {});
-
-          setExercisesByCategory(groupedExercises);
-        }
-       
-      } catch (error) {
-        console.error('Error fetching exercises:', error);
         
+        const categoryResponse = await axios.get('http://localhost:4000/api/Exercise/getCategory'); 
+        setCategory(categoryResponse.data);
+
+        
+        const exercisesResponse = await axios.get('http://localhost:4000/api/Exercise/get'); 
+        setExercisesByCategory(exercisesResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchExercises();
+    fetchData();
   }, []);
-
-
-
-
-
-
-
-
 
 
   const contextValue = {
     token,
     setToken,
     setExercisesByCategory,
-    exercisesByCategory
-
+    exercisesByCategory,
+    setCategory,
+    category,
   };
 
   return (

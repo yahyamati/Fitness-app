@@ -10,7 +10,7 @@ export default {
         customGray: '#212121',
         input: '#2F2F2F',
         navbar:'#202127',
-        backgroundExercice:'#1E1F23',
+        backgroundExercice:'#302B31',
       },
       backgroundImage: {
         'home-bg': "url('./assets/background.jpg')", // Add your image path here
