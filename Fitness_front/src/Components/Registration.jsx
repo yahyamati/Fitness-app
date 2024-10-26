@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { assets } from '../assets/assets';
 import { useTranslation } from 'react-i18next';
-import { StoreContext } from '../context/StoreContext';
+import { StoreContext } from '../Context/StoreContext';
 
 const Registration = ({ setShowLogin }) => {
-  const { setToken } = useContext(StoreContext);
+  const { setToken,setUserId } = useContext(StoreContext);
   const { t } = useTranslation(); 
   const [currState, setCurrState] = useState('Login');
   const [data, setData] = useState({
@@ -36,8 +36,11 @@ const Registration = ({ setShowLogin }) => {
 
       if (response && response.data && response.data.success) {
         console.log(response.data.token); 
+        console.log(response.data.userId);
         setToken(response.data.token);
+        setUserId(response.data.userId);
         localStorage.setItem("token", response.data.token); 
+        localStorage.setItem("userId", response.data.userId); 
         setShowLogin(false); 
         alert(response.data.message || t("Success!")); 
       } else {

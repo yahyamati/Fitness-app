@@ -47,6 +47,8 @@ public class UserController {
             String token = jwtUtil.generateToken(authenticatedUser, userId);
             response.put("success", true);
             response.put("token", token);
+            response.put("userId", userId);
+
             return ResponseEntity.ok(response);
         } else {
             response.put("success", false);

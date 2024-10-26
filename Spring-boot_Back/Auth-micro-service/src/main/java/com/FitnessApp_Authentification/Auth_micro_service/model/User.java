@@ -3,6 +3,9 @@ package com.FitnessApp_Authentification.Auth_micro_service.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Document(collection = "users")
 public class User {
 
@@ -12,8 +15,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-
-   
+    
+    private Map<String, Integer> cartData = new HashMap<>();
 
     public String getId() {
         return id;
@@ -45,5 +48,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Map<String, Integer> getCartData() {
+        return cartData;
+    }
+
+    public void setCartData(Map<String, Integer> cartData) {
+        this.cartData = cartData;
     }
 }

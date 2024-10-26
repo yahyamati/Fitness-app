@@ -30,12 +30,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);  // Remove "Bearer " from the token
+            String token = authorizationHeader.substring(7);  
             try {
-                // Extract user ID from the token
-                Long userId = jwtUtil.extractUserId(token); 
+                
+                String userId = jwtUtil.extractUserId(token); 
 
-                // Retrieve UserDetails based on userId
+                
                 UserDetails userDetails = userService.loadUserById(userId); 
 
                 
@@ -43,12 +43,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     
                     request.setAttribute("userId", userId);
                 } else {
-                    // Token is invalid, return unauthorized response
+                    
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
             } catch (Exception e) {
-                // Handle token validation exceptions (like expired token, invalid signature, etc.)
+                
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Invalid token");
                 return;

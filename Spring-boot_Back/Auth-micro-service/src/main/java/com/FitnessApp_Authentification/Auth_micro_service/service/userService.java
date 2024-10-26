@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
         return user != null ? user.getId() : null; 
     }
 
-    public UserDetails loadUserById(Long userId) {
+    public UserDetails loadUserById(String userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
