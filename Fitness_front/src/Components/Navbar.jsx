@@ -54,7 +54,7 @@ const Navbar = ({ setShowLogin }) => {
           <Link to="/liked" className="flex items-center text-white hover:text-cyan-300 transition duration-200">
             <FontAwesomeIcon 
               icon={faHeart} 
-              className="text-white"
+              className="text-white w-5 h-5"
             />
             {numberOfLikes > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1">
