@@ -3,6 +3,7 @@ import { StoreContext } from '../context/StoreContext';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
+import { FaTimes,FaRobot   } from 'react-icons/fa';
 import { assets } from '../assets/assets';
 
 const Exercise = () => {
@@ -113,7 +114,7 @@ const Exercise = () => {
         className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg hover:scale-110 z-50'
         onClick={toggleChat}
       >
-        💬
+        {showChat ? <FaTimes className="text-black w-7 h-7" /> : <FaRobot  className="text-black w-7 h-7" />} 
       </div>
 
       {showChat && (

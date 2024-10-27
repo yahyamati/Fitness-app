@@ -1,10 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { useTranslation } from 'react-i18next';
 import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faHeart } from '@fortawesome/free-solid-svg-icons';
+import Favorits from './Favorits';
+
 
 const Navbar = ({ setShowLogin }) => {
   const { token, setToken, nmbrlike } = useContext(StoreContext); 
@@ -12,6 +14,11 @@ const Navbar = ({ setShowLogin }) => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false); 
   const [currentLanguage, setCurrentLanguage] = useState('en'); 
+  const [showFavorite, setShowFavorites] = useState(false);
+
+  const toggleFavorites = () => {
+    setShowFavorites(!showFavorite); 
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -24,12 +31,6 @@ const Navbar = ({ setShowLogin }) => {
     setCurrentLanguage(lng); 
   };
 
-
-  // useEffect(() => {
-  //   console.log("Number of likes:", nmbrlike ? Object.keys(nmbrlike).length : 0);
-  // }, [nmbrlike]);
-
-  
   const numberOfLikes = nmbrlike ? Object.keys(nmbrlike).length : 0;
 
   return (
@@ -49,9 +50,11 @@ const Navbar = ({ setShowLogin }) => {
           {currentLanguage === 'en' ? 'FR' : 'EN'}
         </button>
 
-        
         <div className="relative flex items-center">
-          <Link to="/liked" className="flex items-center text-white hover:text-cyan-300 transition duration-200">
+          <button
+            onClick={toggleFavorites} 
+            className="flex items-center text-white hover:text-cyan-300 transition duration-200"
+          >
             <FontAwesomeIcon 
               icon={faHeart} 
               className="text-white w-5 h-5"
@@ -61,7 +64,13 @@ const Navbar = ({ setShowLogin }) => {
                 {numberOfLikes}
               </span>
             )}
-          </Link>
+          </button>
+
+          {showFavorite && (
+            <div className="absolute top-full right-0 mt-2 w-[500px] h-[200px] bg-white rounded-lg shadow-lg overflow-hidden z-10">
+              <Favorits/>
+            </div>
+          )}
         </div>
 
         {!token ? 

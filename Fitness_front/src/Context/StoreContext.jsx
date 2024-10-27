@@ -21,7 +21,7 @@ const StoreContextProvider = (props) => {
       });
   
       console.log("Fetched liked exercises:", response.data);
-      setNmbrlike(response.data); // Set the new liked exercises
+      setNmbrlike(response.data); 
     } catch (error) {
       console.error('Error fetching liked exercises:', error);
     }

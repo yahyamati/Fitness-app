@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Chat from '../chat/chat'; 
+import { FaTimes,FaRobot   } from 'react-icons/fa';
 import axios from 'axios';
 
 const ExerciseDetail = () => {
@@ -81,7 +82,7 @@ const ExerciseDetail = () => {
           onClick={toggleChat} 
         >
          
-          💬
+         {showChat ? <FaTimes className="text-black w-7 h-7" /> : <FaRobot  className="text-black w-7 h-7" />}  
         </div>
 
         

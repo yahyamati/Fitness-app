@@ -56,6 +56,26 @@ const getExercises = async (req, res) => {
 };
 
 
+const getExerciseById = async (req,res)=>{
+    const {id} =req.params;
+
+    try {
+
+        const exercise = await ExerciseModel.findById(id);
+
+        if(!exercise){
+
+            return res.status(404).json({success : false , message : 'Exercise Not found'})
+        }
+
+        return res.status(200).json({success : true ,exercise })
+        
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Error fetching exercise', error: error.message });
+    }
+}
+
+
 const getCategories = async (req, res) => {
     try {
 
@@ -92,4 +112,4 @@ const addCategory = async (req , res)=>{
 }
 
 
-export { addExercise ,getExercises , getCategories, addCategory};
+export { addExercise ,getExercises , getCategories, addCategory ,getExerciseById};

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
 import Chat from '../chat/chat'; 
-import { FaHeart } from 'react-icons/fa'; 
+import { FaHeart,FaTimes,FaRobot  } from 'react-icons/fa'; 
 import axios from 'axios'; 
 
 const CategoryDetail = () => {
@@ -98,13 +98,15 @@ const CategoryDetail = () => {
         className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg'
         onClick={toggleChat} 
       >
-        💬
+        {showChat ? <FaTimes className="text-black w-7 h-7" /> : <FaRobot  className="text-black w-7 h-7" />} 
       </div>
 
       {showChat && (
+        
         <div className="fixed bottom-20 right-5 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
           <Chat /> 
         </div>
+        
       )}
     </div>
   );

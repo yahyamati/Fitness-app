@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Note from './Components/note';
 import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
+import Favorits from './Components/Favorits';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -26,6 +27,7 @@ function App() {
           <Route path="/exercise/category/:category" element={<CategoryDetail />} />
           <Route path="/exercise/detail/:name" element={<ExerciseDetail />} />
           <Route path="/note" element={<Note />} />
+          <Route path="/favorites" element={<Favorits />} />
           {/* Uncomment if needed */}
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
