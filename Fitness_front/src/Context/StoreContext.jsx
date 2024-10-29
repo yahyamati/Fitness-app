@@ -6,6 +6,7 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
+  const [showFavorite, setShowFavorites] = useState(false);
   const [category, setCategory] = useState({ success: false, categories: [] });
   const [exercisesByCategory, setExercisesByCategory] = useState({ success: false, exercises: [] });
   const [cartItem, setCartItem] = useState({});
@@ -137,7 +138,9 @@ const StoreContextProvider = (props) => {
     cartItem,
     setCartItem,
     nmbrlike,
-    setNmbrlike
+    setNmbrlike,
+    setShowFavorites,
+    showFavorite
   };
 
   return (

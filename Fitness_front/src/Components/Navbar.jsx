@@ -1,20 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { useTranslation } from 'react-i18next';
 import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faHeart ,faTimes} from '@fortawesome/free-solid-svg-icons';
 import Favorits from './Favorits';
 
 
 const Navbar = ({ setShowLogin }) => {
-  const { token, setToken, nmbrlike } = useContext(StoreContext); 
+  const { token, setToken, nmbrlike,showFavorite,setShowFavorites } = useContext(StoreContext); 
   const navigate = useNavigate(); 
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false); 
   const [currentLanguage, setCurrentLanguage] = useState('en'); 
-  const [showFavorite, setShowFavorites] = useState(false);
+
+  // const [isLoggedIn , setLoggedIn] = useState(false);
 
   const toggleFavorites = () => {
     setShowFavorites(!showFavorite); 
@@ -25,6 +26,27 @@ const Navbar = ({ setShowLogin }) => {
     setToken("");
     navigate("/"); 
   };
+
+//   function isTokenExpired(token) {
+//     if (!token) return true;
+
+//     const payload = JSON.parse(atob(token.split('.')[1])); 
+//     const expirationTime = payload.exp*1000 ; 
+//     console.log(expirationTime)
+//     console.log(Date.now())
+  
+//     return Date.now() > expirationTime;
+//   }
+
+// useEffect(()=>{
+//   if (isTokenExpired(token)){
+//     localStorage.removeItem("token");
+//     setToken("");
+//     setLoggedIn(false);
+//   }else{
+//     setLoggedIn(true)
+//   }
+// }, [token, setToken]);
 
   const handleLanguageChange = (lng) => {
     i18n.changeLanguage(lng);
@@ -65,12 +87,29 @@ const Navbar = ({ setShowLogin }) => {
               </span>
             )}
           </button>
+          
+            <div 
+              className={`fixed top-0 right-0 h-full w-0.5/2 md:w-1/3 bg-white rounded-l-lg transition-transform duration-500 ease-in-out z-10 ${
+                showFavorite ? 'transform translate-x-0' : 'transform translate-x-full'
+              }`}
+            >
+              <div className="flex justify-end p-4 bg-gray-100 border-b">
+                <button
+                  onClick={() => setShowFavorites(false)}
+                  className="text-gray-500 hover:text-red-600 transition duration-200 ease-in-out"
+                  title="Close Favorites"
+                >
+                  <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
+                </button>
+              </div>
 
-          {showFavorite && (
-            <div className="absolute top-full right-0 mt-2 w-[500px] h-[200px] bg-white rounded-lg shadow-lg overflow-hidden z-10">
-              <Favorits/>
+              <div className="p-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Favorites Exercises:</h2>
+                <Favorits />
+              </div>
             </div>
-          )}
+         
+          
         </div>
 
         {!token ? 

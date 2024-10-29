@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { assets } from '../assets/assets';
 import { useTranslation } from 'react-i18next';
-import { StoreContext } from '../Context/StoreContext';
+import { StoreContext } from '../context/StoreContext';
 
 const Registration = ({ setShowLogin }) => {
   const { setToken,setUserId } = useContext(StoreContext);
@@ -97,7 +97,7 @@ const Registration = ({ setShowLogin }) => {
             required
           />
           <button
-            className='w-full mt-6 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300'
+            className='w-full mt-6 bg-[#FF921B] text-white py-2 rounded-md hover:bg-blue-600 transition duration-300'
             type='submit'
           >
             {currState === 'Sign Up' ? t('createAccount') : t('Login')} 
@@ -117,7 +117,7 @@ const Registration = ({ setShowLogin }) => {
               {t("Create a new account")}
               <span
                 onClick={() => setCurrState('Sign Up')}
-                className='text-blue-500 cursor-pointer ml-1'
+                className='text-[#FF921B] cursor-pointer ml-1'
               >
                 {t("Click here")} 
               </span>
@@ -127,7 +127,7 @@ const Registration = ({ setShowLogin }) => {
               {t("Already have an account?")}
               <span
                 onClick={() => setCurrState('Login')}
-                className='text-blue-500 cursor-pointer ml-1'
+                className='text-[#FF921B] cursor-pointer ml-1'
               >
                 {t("Login here")} 
               </span>
