@@ -11,6 +11,7 @@ import Note from './Components/note';
 import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
 import Favorits from './Components/Favorits';
+import { Toaster } from "@/components/ui/toaster"
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -20,6 +21,8 @@ function App() {
       <Router>
         
         {showLogin && <Registration setShowLogin={setShowLogin} />}
+
+        <Toaster/>
 
         <Navbar setShowLogin={setShowLogin} />
         <Routes>

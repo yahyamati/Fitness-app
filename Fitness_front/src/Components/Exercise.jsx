@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
 import { FaTimes,FaRobot   } from 'react-icons/fa';
 import { assets } from '../assets/assets';
+import { Button } from "@/components/ui/button"
 
 const Exercise = () => {
   const { exercisesByCategory, category } = useContext(StoreContext);
@@ -67,11 +68,12 @@ const Exercise = () => {
           <p className="text-gray-300 mb-10 text-lg max-w-md">
             {t("In order to stay in shape and stay healthy, it is necessary to take a variety of steps, including a balanced diet and regular exercise.")}
           </p>
-          <button
+          <Button
+           
             className="px-6 py-2 text-white bg-[#FF921B] rounded transition duration-200"
           >
             {t("Start")}
-          </button>
+          </Button>
         </div>
       </header>
 

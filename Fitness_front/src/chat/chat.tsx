@@ -124,7 +124,7 @@ const Chat: React.FC = () => {
                         onClick={handleSend}
                         className="absolute inset-y-0 right-3 flex items-center justify-center text-white"
                     >
-                        {/* Vertical Arrow Icon */}
+                        
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-6 transform rotate--180"
