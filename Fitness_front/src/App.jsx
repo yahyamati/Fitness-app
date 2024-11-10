@@ -12,6 +12,7 @@ import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
 import Favorits from './Components/Favorits';
 import { Toaster } from "@/components/ui/toaster"
+import Product from './Components/Product/Product';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/exercise/detail/:name" element={<ExerciseDetail />} />
           <Route path="/note" element={<Note />} />
           <Route path="/favorites" element={<Favorits />} />
+          <Route path="/product" element={<Product />} />
           {/* Uncomment if needed */}
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
