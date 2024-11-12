@@ -32,8 +32,8 @@ function App() {
           <Route path="/exercise/detail/:name" element={<ExerciseDetail />} />
           <Route path="/note" element={<Note />} />
           <Route path="/favorites" element={<Favorits />} />
-          <Route path="/product" element={<Product />} />
-          {/* Uncomment if needed */}
+          {/* <Route path="/product" element={<Product />} /> */}
+         
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
         {/* <Footer /> */}

@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
+// import { axiosInstanceSpring,axiosInstanceNode } from '@/api/axios';
 
 export const StoreContext = createContext(null);
 
@@ -10,7 +11,8 @@ const StoreContextProvider = (props) => {
   const [category, setCategory] = useState({ success: false, categories: [] });
   const [exercisesByCategory, setExercisesByCategory] = useState({ success: false, exercises: [] });
   const [cartItem, setCartItem] = useState({});
-  const [nmbrlike, setNmbrlike] = useState([]); 
+  const [nmbrlike, setNmbrlike] = useState([]);
+ 
 
   const fetchLikedExercises = async () => {
     const token = localStorage.getItem('token'); 

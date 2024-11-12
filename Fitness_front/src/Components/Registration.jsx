@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import { assets } from '../assets/assets'
 import { useTranslation } from 'react-i18next'
-import { StoreContext } from '../context/StoreContext'
+import { StoreContext } from '../Context/StoreContext'
 import { X } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+// import { axiosInstanceSpring } from '@/api/axios';
 
 export default function Registration({ setShowLogin }) {
   const { setToken, setUserId } = useContext(StoreContext)
@@ -32,9 +33,9 @@ export default function Registration({ setShowLogin }) {
     let newUrl = "http://localhost:8080"
 
     if (currState === "Login") {
-      newUrl += "/api/users/login"
+       newUrl += "/api/users/login"
     } else {
-      newUrl += "/api/users/register"
+       newUrl += "/api/users/register"
     }
 
     try {

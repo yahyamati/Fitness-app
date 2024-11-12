@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ChatMessage } from './types';
 import { FaRedo } from 'react-icons/fa';
+// import { axiosInstanceSpring } from '@/api/axios';
+
 
 const Chat: React.FC = () => {
     const [message, setMessage] = useState<string>('');
@@ -11,15 +13,16 @@ const Chat: React.FC = () => {
     const [questions, setQuestions] = useState<string[]>([]);
     const [resultsFetched, setResultsFetched] = useState<boolean>(false);
     
+    
 
     
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
+                
                 const response = await axios.get('http://localhost:8080/api/chat/questions');
                 setQuestions(response.data);
-               
-
+    
                 
                 const initialQuestion: ChatMessage = { sender: 'gpt', text: response.data[0] };
                 setChatHistory([initialQuestion]);
@@ -27,7 +30,7 @@ const Chat: React.FC = () => {
                 console.error('Error fetching questions:', error);
             }
         };
-
+    
         fetchQuestions();
     }, []);
 

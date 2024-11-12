@@ -18,7 +18,7 @@ const ExerciseDetail = () => {
   useEffect(() => {
     const fetchExercise = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/Exercise/get');
+        const response = await axios.get('http://localhost:5000/express/api/Exercise/get');
         if (response.data.success && Array.isArray(response.data.exercises)) {
           const foundExercise = response.data.exercises.find((ex) => ex.name === name);
           if (foundExercise) {
