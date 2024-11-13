@@ -20,7 +20,7 @@ const Chat: React.FC = () => {
         const fetchQuestions = async () => {
             try {
                 
-                const response = await axios.get('http://localhost:8080/api/chat/questions');
+                const response = await axios.get('http://localhost:3000/spring-api/api/chat/questions');
                 setQuestions(response.data);
     
                 

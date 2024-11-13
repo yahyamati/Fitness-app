@@ -113,7 +113,7 @@ const StoreContextProvider = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoryResponse = await axios.get('http://localhost:4000/api/Exercise/getCategory'); 
+        const categoryResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/getCategory'); 
         setCategory(categoryResponse.data);
 
         const exercisesResponse = await axios.get('http://localhost:4000/api/Exercise/get'); 
