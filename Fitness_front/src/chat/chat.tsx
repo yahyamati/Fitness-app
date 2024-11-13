@@ -46,7 +46,7 @@ const Chat: React.FC = () => {
         
         if (step < keys.length) {
             try {
-                const response = await axios.post('http://localhost:8080/api/chat/message', { text: message });
+                const response = await axios.post('http://localhost:3000/spring-api/api/chat/message', { text: message });
                 
                 if (response.data.message) {
                     const botMessage: ChatMessage = { sender: 'gpt', text: response.data.message };
@@ -68,7 +68,7 @@ const Chat: React.FC = () => {
         } else {
             
             try {
-                const resultResponse = await axios.get('http://localhost:8080/api/chat/result');
+                const resultResponse = await axios.get('http://localhost:3000/spring-api/api/chat/result');
                 const suggestions = resultResponse.data;
                 const botMessage: ChatMessage = suggestions
                     ? { sender: 'gpt', text: `Here are some suggested exercises:\n${suggestions}` }
@@ -86,7 +86,7 @@ const Chat: React.FC = () => {
 
     const handleRestart = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/chat/restart');
+            const response = await axios.post('http://localhost:3000/spring-api/api/chat/restart');
             const restartMessage: ChatMessage = { sender: 'gpt', text: response.data };
             setChatHistory([restartMessage]);
             setStep(0);

@@ -18,7 +18,7 @@ const StoreContextProvider = (props) => {
     const token = localStorage.getItem('token'); 
     const userId = localStorage.getItem('userId'); 
     try {
-      const response = await axios.get('http://localhost:8080/api/cart/fetch', {
+      const response = await axios.get('http://localhost:3000/spring-api/api/cart/fetch', {
           headers: { Authorization: `Bearer ${token}` },
           params: { userId },
       });
@@ -58,7 +58,7 @@ const StoreContextProvider = (props) => {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/api/cart/add',
+          'http://localhost:3000/spring-api/api/cart/add',
           { userId, exerciseId },
           {
             headers: {
@@ -84,7 +84,7 @@ const StoreContextProvider = (props) => {
     if (token) {
       try {
         await axios.post(
-          'http://localhost:8080/api/cart/remove', 
+          'http://localhost:3000/spring-api/api/cart/remove', 
           { userId, exerciseId },
           { headers: { Authorization: `Bearer ${token}` } } 
         );
@@ -116,7 +116,7 @@ const StoreContextProvider = (props) => {
         const categoryResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/getCategory'); 
         setCategory(categoryResponse.data);
 
-        const exercisesResponse = await axios.get('http://localhost:4000/api/Exercise/get'); 
+        const exercisesResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/get'); 
         setExercisesByCategory(exercisesResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);

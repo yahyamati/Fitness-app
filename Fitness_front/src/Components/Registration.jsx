@@ -30,12 +30,12 @@ export default function Registration({ setShowLogin }) {
 
   const onLogin = async (event) => {
     event.preventDefault()
-    let newUrl = "http://localhost:8080"
+    let newUrl = "http://localhost:3000"
 
     if (currState === "Login") {
-       newUrl += "/api/users/login"
+       newUrl += "/spring-api/api/users/login"
     } else {
-       newUrl += "/api/users/register"
+       newUrl += "/spring-api/api/users/register"
     }
 
     try {

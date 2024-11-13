@@ -21,7 +21,7 @@ export default function Favorites() {
     const fetchExercises = async () => {
       try {
         const exercisePromises = Object.keys(nmbrlike).map(id =>
-          axios.get(`http://localhost:4000/api/Exercise/${id}`)
+          axios.get(`http://localhost:3000/node-api/api/Exercise/${id}`)
         )
         
         const responses = await Promise.all(exercisePromises)

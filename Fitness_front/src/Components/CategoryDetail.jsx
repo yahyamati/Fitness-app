@@ -58,7 +58,7 @@ export default function CategoryDetail() {
     
       if (userId && token) {
         try {
-          const response = await axios.get('http://localhost:8080/api/cart/fetch', {
+          const response = await axios.get('http://localhost:3000/spring-api/api/cart/fetch', {
             headers: { Authorization: `Bearer ${token}` },
             params: { userId },
           })
