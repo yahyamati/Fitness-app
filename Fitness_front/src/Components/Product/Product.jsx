@@ -11,16 +11,21 @@ export default function FitnessProducts() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [page, setPage] = useState(1) 
 
   const fetchProducts = async () => {
+    setLoading(true)
     try {
-      const response = await fetch('https://real-time-amazon-data.p.rapidapi.com/search?query=fitness+product&page=3&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE', {
-        method: 'GET',
-        headers: {
-          'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
-          'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
-        },
-      })
+      const response = await fetch(
+        `https://real-time-amazon-data.p.rapidapi.com/search?query=fitness+product&page=${page}&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE`, 
+        {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
+            'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
+          },
+        }
+      )
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -38,7 +43,15 @@ export default function FitnessProducts() {
 
   useEffect(() => {
     fetchProducts()
-  }, [])
+  }, [page]) 
+
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1)
+  }
+
+  const handlePreviousPage = () => {
+    setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1))
+  }
 
   if (error) {
     return (
@@ -51,8 +64,7 @@ export default function FitnessProducts() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Fitness Products</h1>
+    <div className="pt-[15vh] container mx-auto px-4 py-8">
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[...Array(8)].map((_, index) => (
@@ -100,6 +112,15 @@ export default function FitnessProducts() {
           ))}
         </div>
       )}
+
+      
+      <div className="flex justify-center mt-6 space-x-4">
+        <Button onClick={handlePreviousPage} disabled={page === 1}>
+          Previous
+        </Button>
+        <span className="text-gray-700">Page {page}</span>
+        <Button onClick={handleNextPage}>Next</Button>
+      </div>
     </div>
   )
 }

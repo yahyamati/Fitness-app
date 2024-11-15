@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faHeart ,faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faHeart ,faTimes,faBox } from '@fortawesome/free-solid-svg-icons';
 import Favorits from './Favorits';
 
 
@@ -62,24 +62,36 @@ const Navbar = ({ setShowLogin }) => {
           <img src="/logo.png" alt="logo" className="w-[60px] h-[60px] ml-10" />
         </div>
       </Link>
+     
 
       <div className="flex items-center space-x-6 mr-6">
+       
+          
         <button
           onClick={() => handleLanguageChange(currentLanguage === 'en' ? 'fr' : 'en')}
-          className="flex items-center text-white hover:text-cyan-300 transition duration-200"
+          className="flex items-center text-white hover:text-[#FF921B] transition duration-200"
         >
           <FontAwesomeIcon icon={faGlobe} className="mr-1" />
           {currentLanguage === 'en' ? 'FR' : 'EN'}
         </button>
 
+        <Link to="/product">
+          <FontAwesomeIcon
+            icon={faBox} 
+            className="text-white w-6 h-6 hover:text-[#FF921B] transition duration-200"
+            title="Find Product"
+          />
+         </Link>
+
         <div className="relative flex items-center">
+          
           <button
             onClick={toggleFavorites} 
             className="flex items-center text-white hover:text-cyan-300 transition duration-200"
           >
             <FontAwesomeIcon 
               icon={faHeart} 
-              className="text-white w-5 h-5"
+              className="text-white hover:text-[#FF921B] w-5 h-5"
             />
             {numberOfLikes > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1">
