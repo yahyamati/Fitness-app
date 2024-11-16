@@ -71,4 +71,9 @@ public class UserService implements UserDetailsService {
                 .authorities(Collections.emptyList()) 
                 .build();
     }
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();  
+    }
+    
 }

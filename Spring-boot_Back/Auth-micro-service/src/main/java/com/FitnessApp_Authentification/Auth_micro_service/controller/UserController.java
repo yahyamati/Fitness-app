@@ -56,4 +56,21 @@ public class UserController {
             return ResponseEntity.status(401).body(response);
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<Map<String, Object>> getAllUsers() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Assuming UserService has a method to get all users
+            Iterable<User> users = userService.getAllUsers();
+            response.put("success", true);
+            response.put("users", users);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to fetch users: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }
+

@@ -1,49 +1,33 @@
 import express from 'express';
 import { connectDB } from './config/db.js';
 import dotenv from 'dotenv';
-import cors from 'cors'
+import cors from 'cors';
+import http from 'http';
+import { initializeSocket } from './middleware/Socket.js';
+import ExerciseRouter from './routes/ExerciseRoute.js';
+import MessageRouter from './routes/MessageRoute.js';
 
-import ExerciseRouter from './routes/ExerciseRoute.js'
-
-
-dotenv.config(); 
-
-// App config
+dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
 // Middleware
-app.use(express.json()); 
-
+app.use(express.json());
 app.use(cors());
 
+// Routes
+app.use('/api/Exercise', ExerciseRouter);
+app.use('/api/Messages', MessageRouter);
 
-
-
-app.use('/api/Exercise',ExerciseRouter)
-
-
-
-
-
+// Connect to MongoDB
 connectDB();
 
-// Ping endpoint to keep the backend awake
-app.get('/ping', (req, res) => {
-  res.send('pong');
+// Create HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.IO
+initializeSocket(server);
+
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
-
-app.get("/", (req, res) => {
-  res.send("API Working");
-});
-
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'An error occurred', error: err.message });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-

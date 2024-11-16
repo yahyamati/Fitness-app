@@ -22,7 +22,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())  
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/login", "/api/users/register", "/api/chat/questions","/api/chat/message","/api/chat/result","/api/chat/restart","/api/test-token","/api/cart/add","/api/cart/remove","/api/cart/fetch").permitAll()
+                .requestMatchers("/api/users/login", "/api/users/register","/api/users/all", "/api/chat/questions","/api/chat/message","/api/chat/result","/api/chat/restart","/api/test-token","/api/cart/add","/api/cart/remove","/api/cart/fetch").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
