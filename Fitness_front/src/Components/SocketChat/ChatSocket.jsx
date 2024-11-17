@@ -1,7 +1,9 @@
 import React, { useEffect, useState,useRef  } from 'react';
 import { io } from 'socket.io-client';
+import { Input } from "@/components/ui/input"
 import axios from 'axios';
 import { MessageCircle, Send, User } from 'lucide-react';
+import {  FaSearch  } from 'react-icons/fa'
 
 const ChatSocket = () => {
   const [socket, setSocket] = useState(null);
@@ -13,6 +15,7 @@ const ChatSocket = () => {
   const [connected, setConnected] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [loadingUsers, setLoadingUsers] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("")
   const messagesEndRef = useRef(null);
 
   // Get current user from token
@@ -29,11 +32,11 @@ const ChatSocket = () => {
     }
   }, []);
 
-  // Function to fetch users
+  
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/api/users/all', {
+      const response = await fetch('http://localhost:3000/spring-api/api/users/all', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,6 +53,10 @@ const ChatSocket = () => {
       setLoadingUsers(false);
     }
   };
+  //filter user by recherche
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   // Socket connection
   useEffect(() => {
@@ -108,7 +115,7 @@ const ChatSocket = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/Messages/${currentUser.userId}/${selectedUser.id}`
+        `http://localhost:3000/node-api/api/Messages/${currentUser.userId}/${selectedUser.id}`
       );
 
       if (response.status !== 200) throw new Error('Failed to load chat history');
@@ -121,7 +128,7 @@ const ChatSocket = () => {
           senderId: message.senderId,
           receiverId: message.receiverId,
           content: message.content,
-          timestamp: message.timestamp, // assuming timestamp is available
+          timestamp: message.timestamp, 
         }));
 
         setMessages(fetchedMessages);
@@ -194,11 +201,23 @@ const ChatSocket = () => {
           {connected && <div className="text-sm text-green-500">Connected</div>}
           {error && <div className="text-sm text-red-500">{error}</div>}
         </div>
+        <div className="w-full max-w-md mb-8">
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Search your gym bro..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        </div>
+      </div>
         {loadingUsers ? (
           <div className="text-gray-500">Loading users...</div>
         ) : (
           <div className="space-y-2">
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <div
                 key={user._id}
                 onClick={() => setSelectedUser(user)}
@@ -286,7 +305,7 @@ const ChatSocket = () => {
           </>
         ) : (
           <div className="flex-1 flex justify-center items-center text-gray-500">
-            Select a user to start chatting
+            Select your gym bro to start chatting
           </div>
         )}
       </div>

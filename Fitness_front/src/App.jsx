@@ -12,7 +12,7 @@ import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
 import Favorits from './Components/Favorits';
 import { Toaster } from "@/components/ui/toaster"
-// import Product from './Components/Product/Product';
+import Product from './Components/Product/Product';
 import ChatSocket from './Components/SocketChat/ChatSocket';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
 
         <Toaster/>
 
-        <Navbar setShowLogin={setShowLogin} />
+        {/* <Navbar setShowLogin={setShowLogin} /> */}
         <Routes>
           <Route path="/" element={<Exercise />} />
           <Route path="/exercise/category/:category" element={<CategoryDetail />} />
@@ -34,7 +34,7 @@ function App() {
           <Route path="/note" element={<Note />} />
           <Route path="/favorites" element={<Favorits />} />
           <Route path="/Message" element={<ChatSocket />} />
-          {/* <Route path="/product" element={<Product />} /> */}
+          <Route path="/product" element={<Product />} />
          
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>

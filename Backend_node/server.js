@@ -3,7 +3,7 @@ import { connectDB } from './config/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import http from 'http';
-import { initializeSocket } from './middleware/Socket.js';
+import { initializeSocket } from './Sockets/Socket.js';
 import ExerciseRouter from './routes/ExerciseRoute.js';
 import MessageRouter from './routes/MessageRoute.js';
 

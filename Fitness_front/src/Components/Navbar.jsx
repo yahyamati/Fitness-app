@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faHeart ,faTimes,faBox } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faHeart ,faTimes,faBox,faMessage } from '@fortawesome/free-solid-svg-icons';
 import Favorits from './Favorits';
 
 
@@ -83,6 +83,14 @@ const Navbar = ({ setShowLogin }) => {
           />
          </Link>
 
+         <Link to="/Message">
+          <FontAwesomeIcon
+            icon={faMessage} 
+            className="text-white w-6 h-6 hover:text-[#FF921B] transition duration-200"
+            title="Messages"
+          />
+         </Link>
+
         <div className="relative flex items-center">
           
           <button
@@ -111,7 +119,7 @@ const Navbar = ({ setShowLogin }) => {
                   className="text-gray-500 hover:text-red-600 transition duration-200 ease-in-out"
                   title="Close Favorites"
                 >
-                  <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
+                  <FontAwesomeIcon icon={faTimes} className="w-6 h-6"  />
                 </button>
               </div>
 

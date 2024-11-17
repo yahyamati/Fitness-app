@@ -1,5 +1,5 @@
 import Message from "../Models/MessageModel.js";
-import { getIO } from '../middleware/Socket.js';
+import { getIO } from '../Sockets/Socket.js';
 
 const sendMessage = async (req, res) => {
   try {
