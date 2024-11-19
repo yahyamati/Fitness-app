@@ -26,7 +26,7 @@ function App() {
 
         <Toaster/>
 
-        {/* <Navbar setShowLogin={setShowLogin} /> */}
+        <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<Exercise />} />
           <Route path="/exercise/category/:category" element={<CategoryDetail />} />
