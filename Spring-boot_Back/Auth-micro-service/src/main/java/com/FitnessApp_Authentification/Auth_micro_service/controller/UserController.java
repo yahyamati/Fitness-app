@@ -44,10 +44,12 @@ public class UserController {
 
         if (authenticatedUser != null) {
             String userId = userService.getUserIdByEmail(user.getEmail());
-            String token = jwtUtil.generateToken(authenticatedUser, userId);
+            String userName = userService.getUserNameByEmail(user.getEmail());
+            String token = jwtUtil.generateToken(authenticatedUser, userId,userName);
             response.put("success", true);
             response.put("token", token);
             response.put("userId", userId);
+            response.put("name", userName);
 
             return ResponseEntity.ok(response);
         } else {

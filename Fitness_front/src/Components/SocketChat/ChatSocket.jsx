@@ -18,7 +18,7 @@ const ChatSocket = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const messagesEndRef = useRef(null);
 
-  // Get current user from token
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -34,26 +34,50 @@ const ChatSocket = () => {
 
   
   const fetchUsers = async () => {
+    setLoadingUsers(true); 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/spring-api/api/users/all', {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.userId
+
+  
+      if (!token) {
+        setError('No token found. Please log in again.');
+        setLoadingUsers(false);
+        return;
+      }
+  
+      const response = await fetch('http://localhost:4000/api/Profiles', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) throw new Error('Failed to fetch users');
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+  
       const data = await response.json();
-      console.log('Fetched users:', data);
-      setUsers(data.users);
+     
+     
+      if (Array.isArray(data)) {
+        //display all users only current user
+        const filteredUsers = data.filter(user => user._id !== userId);
+        setUsers(filteredUsers);
+      } else {
+        setError('Invalid response format');
+      }
+  
     } catch (error) {
       console.error('Error fetching users:', error);
-      setError('Failed to load users');
+      setError(`Error: ${error.message}`);
     } finally {
-      setLoadingUsers(false);
+      setLoadingUsers(false); 
     }
   };
-  //filter user by recherche
+
+  
+  //filter user by name
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -78,7 +102,7 @@ const ChatSocket = () => {
       console.log('Connected to chat server');
       setConnected(true);
       setError('');
-      fetchUsers(); // Now calling fetchUsers here
+      fetchUsers(); 
     });
 
     socketInstance.on('connect_error', (err) => {
@@ -100,7 +124,7 @@ const ChatSocket = () => {
       socketInstance.off('newMessage');
       socketInstance.disconnect();
     };
-  }, []); // Empty dependency array ensures this only runs once when component mounts
+  }, []); 
 
   useEffect(() => {
     if (selectedUser && currentUser) {
@@ -111,11 +135,11 @@ const ChatSocket = () => {
   const loadChatHistory = async () => {
     if (!selectedUser || !currentUser) return;
 
-    console.log(`Loading chat history for ${currentUser.userId} and ${selectedUser.id}`);
+    console.log(`Loading chat history for ${currentUser.userId} and ${selectedUser._id}`);
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/node-api/api/Messages/${currentUser.userId}/${selectedUser.id}`
+        `http://localhost:3000/node-api/api/Messages/${currentUser.userId}/${selectedUser._id}`
       );
 
       if (response.status !== 200) throw new Error('Failed to load chat history');
@@ -142,22 +166,22 @@ const ChatSocket = () => {
   };
 
   const sendMessage = () => {
-    if (!message.trim()) return; // Don't send empty messages
+    if (!message.trim()) return; 
     if (!selectedUser) {
       setError('Please select a user to send a message to.');
       return;
     }
 
-    if (!selectedUser.id) { // Use selectedUser.id instead of selectedUser._id
+    if (!selectedUser._id) { 
       setError('No valid user selected.');
       console.log('Selected user details:', selectedUser);
       return;
     }
 
-    console.log('Sending message to:', selectedUser.id);
+    console.log('Sending message to:', selectedUser._id);
 
     socket.emit('sendMessage', {
-      receiverId: selectedUser.id,
+      receiverId: selectedUser._id,
       content: message,
     });
 
@@ -165,7 +189,7 @@ const ChatSocket = () => {
       ...prev,
       {
         senderId: currentUser.userId,
-        receiverId: selectedUser.id,
+        receiverId: selectedUser._id,
         content: message,
         timestamp: new Date(),
       },
@@ -174,7 +198,6 @@ const ChatSocket = () => {
     setMessage('');
   };
 
-  // Handle 'Enter' key press to send message
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -190,8 +213,8 @@ const ChatSocket = () => {
   }, [messages]);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Users sidebar */}
+    <div className="pt-12 flex h-screen bg-gray-100">
+      
       <div className="w-1/4 bg-white border-r border-gray-200 p-4">
         <div className="mb-4">
           <h2 className="text-xl font-semibold flex items-center gap-2">
@@ -199,7 +222,7 @@ const ChatSocket = () => {
             Chats
           </h2>
           {connected && <div className="text-sm text-green-500">Connected</div>}
-          {error && <div className="text-sm text-red-500">{error}</div>}
+          {error && <div className="text-sm text-red-500">Roh fixi l'error ya ***</div>}
         </div>
         <div className="w-full max-w-md mb-8">
         <div className="relative">
@@ -238,7 +261,7 @@ const ChatSocket = () => {
         )}
       </div>
 
-      {/* Chat area */}
+      
       <div className="flex-1 flex flex-col">
         {selectedUser ? (
           <>
@@ -247,7 +270,7 @@ const ChatSocket = () => {
               <div className="font-semibold">{selectedUser.name}</div>
             </div>
 
-            {/* Messages */}
+           
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.map((msg, index) => {
         const isOwnMessage = msg.senderId === currentUser?.userId;
@@ -277,13 +300,13 @@ const ChatSocket = () => {
         );
       })}
       
-      {/* This div is used for scrolling the chat to the bottom */}
+      
       <div ref={messagesEndRef} />
     </div>
 
 
 
-            {/* Message input */}
+            
             <div className="p-4 border-t border-gray-200 bg-white">
               <div className="flex gap-2">
                 <input

@@ -6,18 +6,28 @@ import http from 'http';
 import { initializeSocket } from './Sockets/Socket.js';
 import ExerciseRouter from './routes/ExerciseRoute.js';
 import MessageRouter from './routes/MessageRoute.js';
+import ProfileRouter from './routes/ProfileRoute.js';
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
+
+const corsOptions = {
+  origin: 'http://localhost:5173', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+
+
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/Exercise', ExerciseRouter);
 app.use('/api/Messages', MessageRouter);
+app.use('/api', ProfileRouter);
 
 // Connect to MongoDB
 connectDB();

@@ -31,6 +31,10 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public String extractName(String token) {
+        return extractClaim(token, claims -> claims.get("name", String.class)); 
+    }
+
     public String extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", String.class)); 
     }
@@ -40,9 +44,10 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails, String userId) {
+    public String generateToken(UserDetails userDetails, String userId , String name) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", userId);
+        extraClaims.put("name", name);
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 

@@ -44,6 +44,12 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail(email);
         return user != null ? user.getId() : null; 
     }
+    
+
+    public String getUserNameByEmail(String email) {      
+        User user = userRepository.findByEmail(email);
+        return user.getName();  
+    }
 
     public UserDetails loadUserById(String userId) {
         Optional<User> userOptional = userRepository.findById(userId);

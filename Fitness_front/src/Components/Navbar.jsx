@@ -1,33 +1,50 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; 
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { assets } from "../assets/assets";
 import { StoreContext } from "../context/StoreContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobe, faHeart ,faTimes,faBox,faMessage } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faGlobe, 
+  faHeart, 
+  faTimes, 
+  faBox, 
+  faMessage, 
+  faUser, 
+  faSignOutAlt 
+} from '@fortawesome/free-solid-svg-icons';
 import Favorits from './Favorits';
 
-
 const Navbar = ({ setShowLogin }) => {
-  const { token, setToken, nmbrlike,showFavorite,setShowFavorites } = useContext(StoreContext); 
-  const navigate = useNavigate(); 
+  const { 
+    token, 
+    setToken, 
+    nmbrlike, 
+    showFavorite, 
+    setShowFavorites 
+  } = useContext(StoreContext);
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('en');
   const { t, i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false); 
-  const [currentLanguage, setCurrentLanguage] = useState('en'); 
+  const navigate = useNavigate();
 
-  // const [isLoggedIn , setLoggedIn] = useState(false);
+  
 
   const toggleFavorites = () => {
-    setShowFavorites(!showFavorite); 
+    setShowFavorites(!showFavorite);
+  };
+
+  const toprofile = () => {
+    navigate("/Profile");
+    setIsOpen("");
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
-    navigate("/"); 
+    navigate("/");
   };
-
-//   function isTokenExpired(token) {
+  //   function isTokenExpired(token) {
 //     if (!token) return true;
 
 //     const payload = JSON.parse(atob(token.split('.')[1])); 
@@ -48,67 +65,48 @@ const Navbar = ({ setShowLogin }) => {
 //   }
 // }, [token, setToken]);
 
-  const handleLanguageChange = (lng) => {
-    i18n.changeLanguage(lng);
-    setCurrentLanguage(lng); 
-  };
+const handleLanguageChange = (lng) => {
+  i18n.changeLanguage(lng);
+  setCurrentLanguage(lng); 
+};
+
 
   const numberOfLikes = nmbrlike ? Object.keys(nmbrlike).length : 0;
 
   return (
-    <nav className="fixed z-50 flex flex-row w-full top-0 bg-transparent justify-between items-center p-4">
-      <Link to="/">
-        <div className="flex cursor-pointer">
-          <img src="/logo.png" alt="logo" className="w-[60px] h-[60px] ml-10" />
-        </div>
-      </Link>
-     
-
-      <div className="flex items-center space-x-6 mr-6">
-       
-          
-        <button
-          onClick={() => handleLanguageChange(currentLanguage === 'en' ? 'fr' : 'en')}
-          className="flex items-center text-white hover:text-[#FF921B] transition duration-200"
-        >
-          <FontAwesomeIcon icon={faGlobe} className="mr-1" />
-          {currentLanguage === 'en' ? 'FR' : 'EN'}
-        </button>
-
-        <Link to="/product">
-          <FontAwesomeIcon
-            icon={faBox} 
-            className="text-white w-6 h-6 hover:text-[#FF921B] transition duration-200"
-            title="Find Product"
-          />
-         </Link>
-
-         <Link to="/Message">
-          <FontAwesomeIcon
-            icon={faMessage} 
-            className="text-white w-6 h-6 hover:text-[#FF921B] transition duration-200"
-            title="Messages"
-          />
-         </Link>
-
-        <div className="relative flex items-center">
-          
-          <button
-            onClick={toggleFavorites} 
-            className="flex items-center text-white hover:text-cyan-300 transition duration-200"
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#333] to-[#555] shadow-md">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="flex items-center space-x-6">
+          <Link to="/product" className="text-white hover:text-[#FF921B]">
+            <FontAwesomeIcon icon={faBox} className="w-5 h-5" />
+          </Link>
+          <Link to="/Message" className="text-white hover:text-[#FF921B]">
+            <FontAwesomeIcon icon={faMessage} className="w-5 h-5" />
+          </Link>
+          <button 
+             onClick={() => handleLanguageChange(currentLanguage === 'en' ? 'fr' : 'en')} 
+            className="text-white hover:text-[#FF921B] flex items-center"
           >
-            <FontAwesomeIcon 
-              icon={faHeart} 
-              className="text-white hover:text-[#FF921B] w-5 h-5"
-            />
-            {numberOfLikes > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1">
-                {numberOfLikes}
-              </span>
-            )}
+            <FontAwesomeIcon icon={faGlobe} className="mr-2" />
+            {currentLanguage === 'en' ? 'FR' : 'EN'}
           </button>
-          
-            <div 
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <button 
+              onClick={toggleFavorites} 
+              className="text-white hover:text-[#FF921B] relative"
+            >
+              <FontAwesomeIcon icon={faHeart} className="w-5 h-5" />
+              {numberOfLikes > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+                  {numberOfLikes}
+                </span>
+              )}
+            </button>
+
+           <div 
               className={`fixed top-0 right-0 h-full w-0.5/2 md:w-1/3 bg-white rounded-l-lg transition-transform duration-500 ease-in-out z-10 ${
                 showFavorite ? 'transform translate-x-0' : 'transform translate-x-full'
               }`}
@@ -128,35 +126,45 @@ const Navbar = ({ setShowLogin }) => {
                 <Favorits />
               </div>
             </div>
-         
-          
-        </div>
-
-        {!token ? 
-          <button 
-            className="px-4 py-2 text-white bg-[#FF921B] rounded transition duration-200"
-            onClick={() => setShowLogin(true)} 
-          >
-            {t('Sign In')}
-          </button>
-         : 
-          <div className='relative'>
-            <img 
-              src={assets.profile_icon} 
-              alt="Profile" 
-              className="cursor-pointer w-6 h-7"
-              onClick={() => setIsOpen(!isOpen)} 
-            />
-            {isOpen && (
-              <ul className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg overflow-hidden z-10">
-                <li className="flex items-center px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={logout}>
-                  <img src={assets.logout_icon} alt="Logout" className="w-4 h-4 mr-2" />
-                  <span className="text-gray-700">Logout</span>
-                </li>
-              </ul>
-            )}
           </div>
-        }
+
+          {!token ? (
+            <button 
+              onClick={() => setShowLogin(true)}
+              className="px-4 py-2 bg-[#FF921B] text-white rounded hover:bg-orange-600 transition"
+            >
+              Sign In
+            </button>
+          ) : (
+            <div className="relative">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-white hover:text-[#FF921B]"
+              >
+                <FontAwesomeIcon icon={faUser} className="w-5 h-5" />
+              </button>
+
+              {isOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden">
+                  <button 
+                    onClick={toprofile} 
+                    className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center"
+                  >
+                    <FontAwesomeIcon icon={faUser} className="mr-2" />
+                    Profile
+                  </button>
+                  <button 
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
