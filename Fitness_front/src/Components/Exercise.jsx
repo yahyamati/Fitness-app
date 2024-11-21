@@ -3,6 +3,7 @@ import { StoreContext } from '../context/StoreContext';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
+import Loading from '../Loading';
 import { FaTimes,FaRobot   } from 'react-icons/fa';
 import { assets } from '../assets/assets';
 import { Button } from "@/components/ui/button"
@@ -11,13 +12,14 @@ const Exercise = () => {
   const { exercisesByCategory, category } = useContext(StoreContext);
   const [showChat, setShowChat] = useState(false);
   const { t, i18n } = useTranslation();
+  
 
   const toggleChat = () => {
     setShowChat(!showChat);
   };
 
   if (!category.success || !exercisesByCategory.success) {
-    return <p className="text-center text-gray-400">Loading data...</p>;
+    return <Loading/> ;
   }
 
   const exerciseData = [
@@ -52,6 +54,9 @@ const Exercise = () => {
       description: t("Running is a method of dynamic terrestrial locomotion allowing humans and other animals to move quickly and rapidly on foot with great efficiency.")
     },
   ];
+
+
+
 
   return (
     <div className="pb-20 bg-black min-h-screen">

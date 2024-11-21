@@ -1,12 +1,13 @@
+import { Suspense, useState,lazy  } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
+import Loading from './Loading';
 // import Home from './Home/Home';
 import ExerciseDetail from './Components/ExerciseDetail';
 import Footer from './Components/Footer';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './translition/langue';
 import Registration from './Components/Registration';
-import { useState } from 'react';
 import Note from './Components/note';
 import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
@@ -15,6 +16,7 @@ import { Toaster } from "@/components/ui/toaster"
 // import Product from './Components/Product/Product';
 import ChatSocket from './Components/SocketChat/ChatSocket';
 import Profile from './Components/Profile/Profile';
+const NotFound = lazy(() => import('./NotFound'));
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -28,6 +30,8 @@ function App() {
         <Toaster/>
 
         <Navbar setShowLogin={setShowLogin} />
+
+        <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Exercise />} />
           <Route path="/exercise/category/:category" element={<CategoryDetail />} />
@@ -36,11 +40,13 @@ function App() {
           <Route path="/favorites" element={<Favorits />} />
           <Route path="/Message" element={<ChatSocket />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
           {/* <Route path="/product" element={<Product />} /> */}
          
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
-        {/* <Footer /> */}
+        </Suspense>
+        {/* <Footer />   */}
       </Router>
     </I18nextProvider>
   );

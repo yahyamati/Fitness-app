@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import Loading from '../Loading';
 
 export default function CategoryDetail() {
   const { exercisesByCategory, addToCart, removeFromCart, setCartItem, nmbrlike, setNmbrlike } = useContext(StoreContext)
@@ -17,6 +18,10 @@ export default function CategoryDetail() {
   const [showChat, setShowChat] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [playingVideo, setPlayingVideo] = useState(null)
+
+  if (!exercisesByCategory.success) {
+    return <Loading/> ;
+  }
 
   const toggleChat = () => {
     setShowChat(!showChat)

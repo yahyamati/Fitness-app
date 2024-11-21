@@ -12,6 +12,7 @@ const StoreContextProvider = (props) => {
   const [exercisesByCategory, setExercisesByCategory] = useState({ success: false, exercises: [] });
   const [cartItem, setCartItem] = useState({});
   const [nmbrlike, setNmbrlike] = useState([]);
+  
  
 
   const fetchLikedExercises = async () => {
@@ -115,9 +116,11 @@ const StoreContextProvider = (props) => {
       try {
         const categoryResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/getCategory'); 
         setCategory(categoryResponse.data);
+        //setLoading(false); 
 
         const exercisesResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/get'); 
         setExercisesByCategory(exercisesResponse.data);
+        //setLoading(false); 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -142,7 +145,8 @@ const StoreContextProvider = (props) => {
     nmbrlike,
     setNmbrlike,
     setShowFavorites,
-    showFavorite
+    showFavorite,
+    
   };
 
   return (
