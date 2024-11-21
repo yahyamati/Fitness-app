@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { StoreContext } from "../context/StoreContext";
@@ -16,14 +16,14 @@ import Favorits from './Favorits';
 
 const Navbar = ({ setShowLogin }) => {
   const { 
-    token, 
-    setToken, 
+    
     nmbrlike, 
     showFavorite, 
     setShowFavorites 
   } = useContext(StoreContext);
   
   const [isOpen, setIsOpen] = useState(false);
+  const [LoggedIn,setLoggedIn] = useState(false)
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -44,26 +44,36 @@ const Navbar = ({ setShowLogin }) => {
     setToken("");
     navigate("/");
   };
-  //   function isTokenExpired(token) {
-//     if (!token) return true;
 
-//     const payload = JSON.parse(atob(token.split('.')[1])); 
-//     const expirationTime = payload.exp*1000 ; 
-//     console.log(expirationTime)
-//     console.log(Date.now())
+
+  // !check if token expired if true disconnect 
+
+  const token = localStorage.getItem('token')
+  function isTokenExpired(token) {
+    if (!token) return true; 
   
-//     return Date.now() > expirationTime;
-//   }
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); 
+      const expirationTime = payload.exp * 1000; 
+  
+      return Date.now() > expirationTime; 
+    } catch (error) {
+      console.error("Invalid token format", error);
+      return true; 
+    }
+  }
 
-// useEffect(()=>{
-//   if (isTokenExpired(token)){
-//     localStorage.removeItem("token");
-//     setToken("");
-//     setLoggedIn(false);
-//   }else{
-//     setLoggedIn(true)
-//   }
-// }, [token, setToken]);
+useEffect(()=>{
+  if (isTokenExpired(token)){
+    localStorage.removeItem("token");
+    
+    setLoggedIn(false);
+  }else{
+    setLoggedIn(true)
+  }
+}, [token]);
+
+
 
 const handleLanguageChange = (lng) => {
   i18n.changeLanguage(lng);
@@ -128,7 +138,7 @@ const handleLanguageChange = (lng) => {
             </div>
           </div>
 
-          {!token ? (
+          {!LoggedIn ? (
             <button 
               onClick={() => setShowLogin(true)}
               className="px-4 py-2 bg-[#FF921B] text-white rounded hover:bg-orange-600 transition"
