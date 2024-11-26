@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StoreContext } from '../context/StoreContext';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
 import Loading from '../Loading';
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 const Exercise = () => {
   const { exercisesByCategory, category } = useContext(StoreContext);
   const [showChat, setShowChat] = useState(false);
+  const { bodyPart } = useParams()
   const { t, i18n } = useTranslation();
   
 
@@ -18,9 +19,9 @@ const Exercise = () => {
     setShowChat(!showChat);
   };
 
-  if (!category.success || !exercisesByCategory.success) {
-    return <Loading/> ;
-  }
+  // if (!category.success || !exercisesByCategory.success) {
+  //   return <Loading/> ;
+  // }
 
   const exerciseData = [
     {
@@ -104,18 +105,17 @@ const Exercise = () => {
         {t("Planfit Exercises Guide")}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 px-5">
-        {category.categories.map((cat) => (
-          <Link
-            to={`/exercise/category/${cat.category}`}
-            key={cat._id}
+    {category.map((bodyPart, index) => (
+        <Link
+            to={`/exercises/bodyPart/${bodyPart}`}
+            key={index}
             className="flex items-center p-4 bg-[#393939] rounded-lg shadow-md transition transform hover:scale-105 relative"
-          >
-            <img src={cat.image} alt={cat.category} className="w-20 h-20 mr-4" />
-            <h2 className="text-2xl font-bold text-[#FFFFFF]">{cat.category}</h2>
+        >
+            <h2 className="text-2xl font-bold text-[#FFFFFF]">{bodyPart}</h2>
             <div className="absolute inset-0 bg-gradient-to-b from-[#393939] to-transparent rounded-lg" />
-          </Link>
-        ))}
-      </div>
+        </Link>
+    ))}
+</div>
 
       <div
         className='bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg hover:scale-110 z-50'

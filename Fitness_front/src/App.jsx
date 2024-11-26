@@ -17,6 +17,7 @@ import { Toaster } from "@/components/ui/toaster"
 import ChatSocket from './Components/SocketChat/ChatSocket';
 import Profile from './Components/Profile/Profile';
 const NotFound = lazy(() => import('./NotFound'));
+// import OAuthCallback from './Components/OAuthCallback';
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -34,13 +35,14 @@ function App() {
         <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Exercise />} />
-          <Route path="/exercise/category/:category" element={<CategoryDetail />} />
-          <Route path="/exercise/detail/:name" element={<ExerciseDetail />} />
+          <Route path="/exercises/bodyPart/:bodyPart" element={<CategoryDetail />} />
+          <Route path="/exercises/detail/:bodyPart/:name" element={<ExerciseDetail />} />
           <Route path="/note" element={<Note />} />
           <Route path="/favorites" element={<Favorits />} />
           <Route path="/Message" element={<ChatSocket />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
+          {/* <Route path="/callback" element={<OAuthCallback />} /> */}
           {/* <Route path="/product" element={<Product />} /> */}
          
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}

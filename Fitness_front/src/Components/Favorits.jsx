@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link,useParams } from 'react-router-dom'
 import { StoreContext } from '../context/StoreContext'
 import { X, Dumbbell, Heart, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,31 +16,39 @@ export default function Favorites() {
   const [exercises, setExercises] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const {bodyPart,name} = useParams();
 
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const exercisePromises = Object.keys(nmbrlike).map(id =>
-          axios.get(`http://localhost:3000/node-api/api/Exercise/${id}`)
-        )
-        
-        const responses = await Promise.all(exercisePromises)
-        const fetchedExercises = responses.map(response => response.data.exercise)
-        setExercises(fetchedExercises)
+        const exercisePromises = Object.keys(nmbrlike).map((id) =>
+          axios.get(`https://exercisedb.p.rapidapi.com/exercises/exercise/${id}`, {
+            headers: {
+              'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+              'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
+            },
+          })
+        );
+  
+        const responses = await Promise.all(exercisePromises);
+        const fetchedExercises = responses.map((response) => response.data);
+        setExercises(fetchedExercises);
       } catch (err) {
-        console.error('Error fetching exercises:', err)
-        setError(err)
+        console.error('Error fetching exercises:', err);
+        setError(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-
+    };
+  
     if (nmbrlike && Object.keys(nmbrlike).length > 0) {
-      fetchExercises()
+      fetchExercises();
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [nmbrlike])
+  }, [nmbrlike]);
+
+
 
   const handleRemove = (exerciseId) => {
     if (nmbrlike[exerciseId]) {
@@ -53,7 +61,7 @@ export default function Favorites() {
         return updatedLikes
       })
     
-      setExercises(prevExercises => prevExercises.filter(exercise => exercise._id !== exerciseId))
+      setExercises(prevExercises => prevExercises.filter(exercise => exercise.id !== exerciseId))
     }
   }
 
@@ -86,13 +94,13 @@ export default function Favorites() {
         <ScrollArea className="h-[60vh] pr-4">
           {exercises.length > 0 ? (
             exercises.map(exercise => (
-              <Card key={exercise._id} className="mb-4 overflow-hidden">
+              <Card key={exercise.id} className="mb-4 overflow-hidden">
                 <CardContent className="p-4 flex justify-between items-center">
                   <div className="flex items-center space-x-4">
                     <Dumbbell className="h-8 w-8 text-primary" />
                     <div>
                       <Link
-                        to={`/exercise/detail/${exercise.name}`}
+                        to={`/exercises/detail/${exercise.bodyPart}/${exercise.name}`}
                         onClick={() => setShowFavorites(false)}
                         className="text-lg font-semibold hover:underline"
                       >
@@ -107,7 +115,7 @@ export default function Favorites() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleRemove(exercise._id)}
+                    onClick={() => handleRemove(exercise.id)}
                     className="text-gray-500 hover:text-red-500 transition-colors"
                     aria-label={`Remove ${exercise.name} from favorites`}
                   >

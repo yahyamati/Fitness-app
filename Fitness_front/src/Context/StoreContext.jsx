@@ -1,15 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 // import { axiosInstanceSpring,axiosInstanceNode } from '@/api/axios';
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  // const { bodyPart } = useParams();
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
   const [showFavorite, setShowFavorites] = useState(false);
-  const [category, setCategory] = useState({ success: false, categories: [] });
-  const [exercisesByCategory, setExercisesByCategory] = useState({ success: false, exercises: [] });
+  const [category, setCategory] = useState([]);
+  // const [exercisesByCategory, setExercisesByCategory] = useState([]);
+  
   const [cartItem, setCartItem] = useState({});
   const [nmbrlike, setNmbrlike] = useState([]);
   
@@ -112,30 +115,60 @@ const StoreContextProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const categoryResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/getCategory'); 
-        setCategory(categoryResponse.data);
-        //setLoading(false); 
+    const fetchCategories = async () => {
+        try {
+            const headers = {
+                'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+                'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
+            };
 
-        const exercisesResponse = await axios.get('http://localhost:3000/node-api/api/Exercise/get'); 
-        setExercisesByCategory(exercisesResponse.data);
-        //setLoading(false); 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+            const response = await axios.get(
+                'https://exercisedb.p.rapidapi.com/exercises/bodyPartList',
+                { headers }
+            );
+            setCategory(response.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
     };
 
-    fetchData();
-  }, []);
+    fetchCategories();
+}, []);
+
+
+// useEffect(() => {
+//   const fetchExercises = async () => {
+//       try {
+//           const headers = {
+//               'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+//               'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
+//           };
+
+//           const response = await axios.get(
+//               `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+//               { headers }
+//           );
+//           setExercisesByCategory(response.data);
+//       } catch (error) {
+//           console.error('Error fetching exercises:', error);
+//       }
+//   };
+
+//   if (bodyPart) {
+//       fetchExercises();
+//   } else {
+//       console.error('Body part is undefined');
+//   }
+// }, [bodyPart]);
+
 
   const contextValue = {
     token,
     setToken,
     userId,
     setUserId,
-    setExercisesByCategory,
-    exercisesByCategory,
+    // setExercisesByCategory,
+    // exercisesByCategory,
     setCategory,
     category,
     addToCart,
@@ -146,6 +179,7 @@ const StoreContextProvider = (props) => {
     setNmbrlike,
     setShowFavorites,
     showFavorite,
+    // bodyPart
     
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useContext,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { StoreContext } from "../context/StoreContext";
+import { StoreContext } from '../Context/StoreContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faGlobe, 
@@ -16,7 +16,7 @@ import Favorits from './Favorits';
 
 const Navbar = ({ setShowLogin }) => {
   const { 
-    
+    setToken,
     nmbrlike, 
     showFavorite, 
     setShowFavorites 
