@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -32,11 +33,11 @@ public class JwtUtil {
     }
 
     public String extractName(String token) {
-        return extractClaim(token, claims -> claims.get("name", String.class)); 
+        return extractClaim(token, claims -> claims.get("name", String.class));
     }
 
     public String extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("userId", String.class)); 
+        return extractClaim(token, claims -> claims.get("userId", String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -48,30 +49,57 @@ public class JwtUtil {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", userId);
         extraClaims.put("name", name);
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return buildToken(extraClaims, userDetails.getUsername(), jwtExpiration);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+        return buildToken(new HashMap<>(), userDetails.getUsername(), refreshExpiration);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+    public String generateTokenFromOAuth2(OAuth2AuthenticationToken authentication) {
+        // Extract details from the OAuth2 token
+        Map<String, Object> attributes = authentication.getPrincipal().getAttributes();
+        
+        // Retrieve user details (ensure these keys exist in the OAuth2 provider's response)
+        String username = authentication.getName(); // Typically the email or unique identifier
+        String userId = attributes.getOrDefault("sub", "").toString(); // 'sub' represents the user ID in most OAuth2 providers
+        String name = attributes.getOrDefault("name", "").toString(); // 'name' is often included in the response
+    
+        // Validate essential attributes
+        if (userId.isEmpty() || username.isEmpty()) {
+            throw new IllegalArgumentException("Invalid OAuth2 token: Missing user information");
+        }
+    
+        // Add additional claims to the JWT token
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userId", userId);
+        extraClaims.put("name", name);
+    
+        // Generate the JWT token using your utility method
+        return buildToken(extraClaims, username, jwtExpiration);
+    }
+    
+
+    private String buildToken(Map<String, Object> extraClaims, String username, long expiration) {
+        // Get current date and expiration time
+        Date now = new Date(System.currentTimeMillis());
+        Date expirationDate = new Date(System.currentTimeMillis() + expiration);
+
+        // Create and return the JWT token
         return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .setClaims(extraClaims) // Add extra claims (e.g., userId, name)
+                .setSubject(username)   // Set the subject (username or email)
+                .setIssuedAt(now)       // Set the issued date
+                .setExpiration(expirationDate) // Set the expiration date
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Sign with secret key
+                .compact(); // Generate the JWT token as a string
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             final String username = extractUsername(token);
-            
             return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
         } catch (Exception e) {
-            
             System.out.println("Token validation error: " + e.getMessage());
             return false;
         }

@@ -2,22 +2,21 @@ package com.FitnessApp_Authentification.Auth_micro_service.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @Document(collection = "users")
 public class User {
-
     @Id
     private String id;  
-
     private String name;
     private String email;
     private String password;
-    
+    private String provider; // Added for OAuth2
+    private Boolean emailVerified = false;
     private Map<String, Integer> cartData = new HashMap<>();
 
+    // Existing getters and setters
     public String getId() {
         return id;
     }
@@ -56,5 +55,22 @@ public class User {
 
     public void setCartData(Map<String, Integer> cartData) {
         this.cartData = cartData;
+    }
+
+    // New getters and setters for OAuth2
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

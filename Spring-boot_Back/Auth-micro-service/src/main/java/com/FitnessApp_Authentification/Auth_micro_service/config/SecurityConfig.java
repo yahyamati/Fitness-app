@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
+
 
 @Configuration
 public class SecurityConfig {
@@ -19,15 +21,40 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())  
-            .cors(Customizer.withDefaults())
+            // Disable CSRF for stateless APIs
+            .csrf(csrf -> csrf.disable())
+            .cors(Customizer.withDefaults()) // Default CORS configuration
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/login", "/api/users/register","/api/users/all", "/api/chat/questions","/api/chat/message","/api/chat/result","/api/chat/restart","/api/test-token","/api/cart/add","/api/cart/remove","/api/cart/fetch").permitAll()
+                // Public endpoints
+                .requestMatchers(
+                    "/api/users/login", 
+                    "/api/users/register",
+                    "/api/users/all", 
+                    "/api/chat/questions",
+                    "/api/chat/message",
+                    "/api/chat/result",
+                    "/api/chat/restart",
+                    "/api/test-token",
+                    "/api/cart/add",
+                    "/api/cart/remove",
+                    "/api/cart/fetch",
+                    "api/users/oauth2/login",
+                    "/oauth2/authorization/google"
+                                   
+                ).permitAll()
+                // Secure all other endpoints
                 .anyRequest().authenticated()
             )
+            // Configure OAuth2 login
+            .oauth2Login(oauth2 -> oauth2
+                .defaultSuccessUrl("/home")     // Redirect after successful login
+                .failureUrl("/login?error=true") // Redirect on login failure
+            )
+            // Use stateless session management for token-based authentication
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            // Add JWT filter to process tokens
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
