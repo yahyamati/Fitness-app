@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.AuthProvider;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -87,18 +86,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
     
-    public User handleOAuth2User(String email, String name) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            user = new User();
-            user.setEmail(email);
-            user.setName(name);
-            user.setProvider("GOOGLE");
-            user.setEmailVerified(true);
-        } else {
-            // Update existing user's name if it has changed
-            user.setName(name);
-        }
-        return userRepository.save(user);
-    }
+
 }

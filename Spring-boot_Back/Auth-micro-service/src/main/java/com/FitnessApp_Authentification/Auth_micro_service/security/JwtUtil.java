@@ -7,7 +7,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -56,28 +55,7 @@ public class JwtUtil {
         return buildToken(new HashMap<>(), userDetails.getUsername(), refreshExpiration);
     }
 
-    public String generateTokenFromOAuth2(OAuth2AuthenticationToken authentication) {
-        // Extract details from the OAuth2 token
-        Map<String, Object> attributes = authentication.getPrincipal().getAttributes();
-        
-        // Retrieve user details (ensure these keys exist in the OAuth2 provider's response)
-        String username = authentication.getName(); // Typically the email or unique identifier
-        String userId = attributes.getOrDefault("sub", "").toString(); // 'sub' represents the user ID in most OAuth2 providers
-        String name = attributes.getOrDefault("name", "").toString(); // 'name' is often included in the response
     
-        // Validate essential attributes
-        if (userId.isEmpty() || username.isEmpty()) {
-            throw new IllegalArgumentException("Invalid OAuth2 token: Missing user information");
-        }
-    
-        // Add additional claims to the JWT token
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("userId", userId);
-        extraClaims.put("name", name);
-    
-        // Generate the JWT token using your utility method
-        return buildToken(extraClaims, username, jwtExpiration);
-    }
     
 
     private String buildToken(Map<String, Object> extraClaims, String username, long expiration) {

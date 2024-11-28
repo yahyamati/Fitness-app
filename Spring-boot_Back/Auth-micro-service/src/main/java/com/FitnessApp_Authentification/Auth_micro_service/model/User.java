@@ -12,8 +12,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String provider; // Added for OAuth2
-    private Boolean emailVerified = false;
     private Map<String, Integer> cartData = new HashMap<>();
 
     // Existing getters and setters
@@ -57,20 +55,6 @@ public class User {
         this.cartData = cartData;
     }
 
-    // New getters and setters for OAuth2
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public Boolean getEmailVerified() {
-        return emailVerified;
-    }
-
-    public void setEmailVerified(Boolean emailVerified) {
-        this.emailVerified = emailVerified;
-    }
+   
+   
 }

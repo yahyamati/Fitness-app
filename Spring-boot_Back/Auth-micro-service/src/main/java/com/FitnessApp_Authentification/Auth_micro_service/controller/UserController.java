@@ -3,11 +3,8 @@ package com.FitnessApp_Authentification.Auth_micro_service.controller;
 import com.FitnessApp_Authentification.Auth_micro_service.model.User;
 import com.FitnessApp_Authentification.Auth_micro_service.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import com.FitnessApp_Authentification.Auth_micro_service.service.UserService;
 
@@ -82,47 +79,7 @@ public class UserController {
 
  
 
-    @PostMapping("/oauth2/login")
-    public ResponseEntity<Map<String, Object>> generateTokenFromOAuth2(@RequestBody OAuth2AuthenticationToken authentication) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            OAuth2User oauth2User = authentication.getPrincipal();
-            Map<String, Object> attributes = oauth2User.getAttributes();
-            
-            String email = attributes.get("email").toString();
-            String name = attributes.get("name").toString();
-            
-            // Register or update the user
-            User user = userService.handleOAuth2User(email, name);
-            
-            // Generate JWT token
-            String token = jwtUtil.generateTokenFromOAuth2(authentication);
-            
-            response.put("success", true);
-            response.put("token", token);
-            response.put("user", Map.of(
-                "id", user.getId(),
-                "email", user.getEmail(),
-                "name", user.getName(),
-                "cartData", user.getCartData()
-            ));
-            
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Authentication failed: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
-    }
 
-
-
-
-@RequestMapping("/oauth2/callback")
-public String handleGoogleCallback(@RequestParam String code) {
-    // Process the callback from Google
-    return "redirect:/home";
-}
 
 
 }
