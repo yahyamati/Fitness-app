@@ -140,64 +140,66 @@ export const getIO = () => {
 };
 
 // Function to handle WebSocket messages from Postman or external clients
-const handlePostmanWebSocket = (socket) => {
-  socket.on('message', async (message) => {
-    try {
-      const data = JSON.parse(message);
 
-      switch (data.type) {
-        case 'message':
-          // Handle sending a chat message
-          const newMessage = new Message({
-            senderId: socket.userId,
-            receiverId: data.receiverId,
-            content: data.content,
-          });
-          await newMessage.save();
 
-          // Emit confirmation to the sender
-          socket.emit('message', {
-            type: 'confirmation',
-            message: 'Message sent successfully',
-            data: newMessage,
-          });
+// const handlePostmanWebSocket = (socket) => {
+//   socket.on('message', async (message) => {
+//     try {
+//       const data = JSON.parse(message);
 
-          // Emit the message to the receiver
-          socket.to(data.receiverId).emit('message', {
-            type: 'new_message',
-            data: newMessage,
-          });
-          break;
+//       switch (data.type) {
+//         case 'message':
+//           // Handle sending a chat message
+//           const newMessage = new Message({
+//             senderId: socket.userId,
+//             receiverId: data.receiverId,
+//             content: data.content,
+//           });
+//           await newMessage.save();
 
-        case 'typing':
-          // Emit typing indicator to the receiver
-          socket.to(data.receiverId).emit('message', {
-            type: 'typing_indicator',
-            userId: socket.userId,
-          });
-          break;
+//           // Emit confirmation to the sender
+//           socket.emit('message', {
+//             type: 'confirmation',
+//             message: 'Message sent successfully',
+//             data: newMessage,
+//           });
 
-        case 'stop_typing':
-          // Emit stop typing indicator to the receiver
-          socket.to(data.receiverId).emit('message', {
-            type: 'stop_typing',
-            userId: socket.userId,
-          });
-          break;
+//           // Emit the message to the receiver
+//           socket.to(data.receiverId).emit('message', {
+//             type: 'new_message',
+//             data: newMessage,
+//           });
+//           break;
 
-        default:
-          // Handle unknown message types
-          socket.emit('message', {
-            type: 'error',
-            message: 'Unknown message type',
-          });
-      }
-    } catch (error) {
-      console.error('WebSocket message error:', error.message);
-      socket.emit('message', {
-        type: 'error',
-        message: error.message,
-      });
-    }
-  });
-};
+//         case 'typing':
+//           // Emit typing indicator to the receiver
+//           socket.to(data.receiverId).emit('message', {
+//             type: 'typing_indicator',
+//             userId: socket.userId,
+//           });
+//           break;
+
+//         case 'stop_typing':
+//           // Emit stop typing indicator to the receiver
+//           socket.to(data.receiverId).emit('message', {
+//             type: 'stop_typing',
+//             userId: socket.userId,
+//           });
+//           break;
+
+//         default:
+//           // Handle unknown message types
+//           socket.emit('message', {
+//             type: 'error',
+//             message: 'Unknown message type',
+//           });
+//       }
+//     } catch (error) {
+//       console.error('WebSocket message error:', error.message);
+//       socket.emit('message', {
+//         type: 'error',
+//         message: error.message,
+//       });
+//     }
+//   });
+// };

@@ -75,7 +75,7 @@ export default function Registration({ setShowLogin }) {
     try {
       const session = await account.create(
         'google',
-        'http://localhost:5173/', // Redirect after success
+        'http://localhost:5173', // Redirect after success
         'http://localhost:5173/failure' // Redirect after failure
       );
 

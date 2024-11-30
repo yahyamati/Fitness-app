@@ -18,35 +18,35 @@ export default function Favorites() {
   const [error, setError] = useState(null)
   const {bodyPart,name} = useParams();
 
-  useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const exercisePromises = Object.keys(nmbrlike).map((id) =>
-          axios.get(`https://exercisedb.p.rapidapi.com/exercises/exercise/${id}`, {
-            headers: {
-              'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-              'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
-            },
-          })
-        );
+  // useEffect(() => {
+  //   const fetchExercises = async () => {
+  //     try {
+  //       const exercisePromises = Object.keys(nmbrlike).map((id) =>
+  //         axios.get(`https://exercisedb.p.rapidapi.com/exercises/exercise/${id}`, {
+  //           headers: {
+  //             'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+  //             'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
+  //           },
+  //         })
+  //       );
   
-        const responses = await Promise.all(exercisePromises);
-        const fetchedExercises = responses.map((response) => response.data);
-        setExercises(fetchedExercises);
-      } catch (err) {
-        console.error('Error fetching exercises:', err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const responses = await Promise.all(exercisePromises);
+  //       const fetchedExercises = responses.map((response) => response.data);
+  //       setExercises(fetchedExercises);
+  //     } catch (err) {
+  //       console.error('Error fetching exercises:', err);
+  //       setError(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
   
-    if (nmbrlike && Object.keys(nmbrlike).length > 0) {
-      fetchExercises();
-    } else {
-      setLoading(false);
-    }
-  }, [nmbrlike]);
+  //   if (nmbrlike && Object.keys(nmbrlike).length > 0) {
+  //     fetchExercises();
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [nmbrlike]);
 
 
 

@@ -8,6 +8,7 @@ import {
   faHeart, 
   faTimes, 
   faBox, 
+  faHome,
   faMessage, 
   faUser, 
   faSignOutAlt 
@@ -84,9 +85,12 @@ const handleLanguageChange = (lng) => {
   const numberOfLikes = nmbrlike ? Object.keys(nmbrlike).length : 0;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#333] to-[#555] shadow-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#0b0b0b] to-[#4a4a4a] shadow-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-6">
+          <Link to="/" className="text-white hover:text-[#FF921B]" title="Home">
+            <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
+          </Link>
           <Link to="/product" className="text-white hover:text-[#FF921B]">
             <FontAwesomeIcon icon={faBox} className="w-5 h-5" />
           </Link>
@@ -143,7 +147,7 @@ const handleLanguageChange = (lng) => {
               onClick={() => setShowLogin(true)}
               className="px-4 py-2 bg-[#FF921B] text-white rounded hover:bg-orange-600 transition"
             >
-              Sign In
+             {t("Sign In")}
             </button>
           ) : (
             <div className="relative">

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams,Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
 import Chat from '../chat/chat';
 import { FaHeart, FaTimes, FaRobot, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Loading from '../Loading';
 
 export default function CategoryDetail() {
@@ -63,32 +64,32 @@ export default function CategoryDetail() {
     loadCartData();
   }, [setCartItem, setNmbrlike]);
 
-  useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const headers = {
-          'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-          'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
-        };
+  // useEffect(() => {
+  //   const fetchExercises = async () => {
+  //     try {
+  //       const headers = {
+  //         'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+  //         'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
+  //       };
 
-        const response = await axios.get(
-          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
-          { headers }
-        );
-        setExercisesByCategory(response.data);
-      } catch (error) {
-        console.error('Error fetching exercises:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const response = await axios.get(
+  //         `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+  //         { headers }
+  //       );
+  //       setExercisesByCategory(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching exercises:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (bodyPart) {
-      fetchExercises();
-    } else {
-      console.error('Body part is undefined');
-    }
-  }, [bodyPart]);
+  //   if (bodyPart) {
+  //     fetchExercises();
+  //   } else {
+  //     console.error('Body part is undefined');
+  //   }
+  // }, [bodyPart]);
 
   const filteredExercises = exercisesByCategory.filter((exercise) =>
     exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -99,75 +100,85 @@ export default function CategoryDetail() {
   }
 
   return (
-    <div className="bg-backgroundExercice min-h-screen bg-cover bg-center flex flex-col items-center justify-center pt-28 pb-20">
-      <h1 className="text-4xl text-white font-bold mb-6">
-        {bodyPart} Exercises
-      </h1>
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl md:text-5xl text-center font-bold text-gray-800 mb-8">
+          {bodyPart.charAt(0).toUpperCase() + bodyPart.slice(1)} Exercises
+        </h1>
 
-      <div className="w-full max-w-md mb-8">
-        <div className="relative">
-          <Input
-            type="text"
-            placeholder="Search exercises..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <div className="max-w-md mx-auto mb-12">
+          <div className="relative">
+            <Input
+              type="text"
+              placeholder="Search exercises..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
+            />
+            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-xl" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredExercises.map((exercise) => (
+            <div className="h-full">
+              <Card key={exercise.id} className="h-full flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <CardHeader className="p-4 bg-gradient-to-r from-blue-600 to-purple-600">
+                  <CardTitle className="text-xl font-bold text-white leading-tight">
+                    {exercise.name.length > 25 ? `${exercise.name.substring(0, 25)}...` : exercise.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 flex-grow">
+                  <div className="aspect-square overflow-hidden rounded-md mb-4">
+                    <img
+                      src={exercise.gifUrl}
+                      alt={exercise.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">Target: {exercise.target}</p>
+                  <p className="text-sm text-gray-600">Equipment: {exercise.equipment}</p>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center p-4 bg-gray-50">
+                  <Button variant="outline" asChild className="flex-1 mr-2">
+                    <Link to={`/exercises/detail/${bodyPart}/${exercise.name}`}>
+                      View Details
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`${
+                      nmbrlike[exercise.id]
+                        ? 'text-red-500 hover:text-red-600'
+                        : 'text-gray-400 hover:text-gray-500'
+                    } transition-colors duration-300`}
+                    onClick={() => handleToggleCart(exercise.id)}
+                  >
+                    <FaHeart className="h-5 w-5" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredExercises.map((exercise) => (
-          <div
-            key={exercise.id}
-            className="w-full max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
-          >
-            <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-500">
-              <h3 className="text-[14px] font-semibold text-white">{exercise.name}</h3>
-            </div>
-            <div className="p-4">
-              <img
-                src={exercise.gifUrl}
-                alt={exercise.name}
-                className="w-full h-[25vh] object-cover rounded-md mb-4"
-              />
-              <p className="text-sm text-gray-600">Target: {exercise.target}</p>
-              <p className="text-sm text-gray-600">Equipment: {exercise.equipment}</p>
-            </div>
-            <Button variant="outline" asChild className="flex-1 ml-5">
-                <Link to={`/exercises/detail/${bodyPart}/${exercise.name}`}>
-                  View Details
-                </Link>
-              </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={`${
-                nmbrlike[exercise.id]
-                  ? 'text-red-500 hover:text-red-600'
-                  : 'text-gray-400 hover:text-gray-500'
-              }`}
-              onClick={() => handleToggleCart(exercise.id)}
-            >
-              <FaHeart className="h-5 w-5" />
-            </Button>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="bg-white rounded-full w-[50px] h-[50px] cursor-pointer fixed bottom-6 right-4 flex items-center justify-center shadow-lg"
+      <Button
+        variant="default"
+        size="icon"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
         onClick={toggleChat}
       >
-        {showChat ? <FaTimes className="text-black w-7 h-7" /> : <FaRobot className="text-black w-7 h-7" />}
-      </div>
+        {showChat ? <FaTimes className="w-6 h-6" /> : <FaRobot className="w-6 h-6" />}
+      </Button>
 
       {showChat && (
-        <div className="fixed bottom-20 right-5 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="fixed bottom-24 right-6 w-80 h-[500px] bg-white rounded-lg shadow-2xl overflow-hidden border-2 border-blue-300">
           <Chat />
         </div>
       )}
     </div>
   );
 }
+

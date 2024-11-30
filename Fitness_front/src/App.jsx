@@ -48,7 +48,7 @@ function App() {
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
         </Suspense>
-        {/* <Footer />   */}
+        <Footer />  
       </Router>
     </I18nextProvider>
   );

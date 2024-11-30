@@ -104,36 +104,39 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  useEffect(() => {
-    const loadData = () => {
-      const localToken = localStorage.getItem("token");
-      if (localToken) {
-        setToken(localToken);
-      }
-    };
-    loadData();
-  }, []);
+//   useEffect(() => {
+//     const loadData = () => {
+//       const localToken = localStorage.getItem("token");
+//       if (localToken) {
+//         setToken(localToken);
+//       }
+//     };
+//     loadData();
+//   }, []);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-        try {
-            const headers = {
-                'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-                'x-rapidapi-key': 'c5df762021mshcb365ba86dc67bcp17aab3jsn6d764bb364bf',
-            };
+//   useEffect(() => {
+//     const fetchCategories = async () => {
+//         try {
+//             const headers = {
+//                 'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+//                 'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
+//             };
 
-            const response = await axios.get(
-                'https://exercisedb.p.rapidapi.com/exercises/bodyPartList',
-                { headers }
-            );
-            setCategory(response.data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
-    };
+//             const response = await axios.get(
+//                 'https://exercisedb.p.rapidapi.com/exercises/bodyPartList',
+//                 { headers }
+//             );
+//             setCategory(response.data);
+//         } catch (error) {
+//             console.error('Error fetching categories:', error);
+//         }
+//     };
 
-    fetchCategories();
-}, []);
+//     fetchCategories();
+// }, []);
+
+
+
 
 
 // useEffect(() => {
