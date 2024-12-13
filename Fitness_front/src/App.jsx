@@ -8,7 +8,7 @@ import Footer from './Components/Footer';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './translition/langue';
 import Registration from './Components/Registration';
-import Note from './Components/note';
+// import Note from './Components/note';
 import CategoryDetail from './Components/CategoryDetail';
 import Exercise from './Components/Exercise';
 import Favorits from './Components/Favorits';
@@ -37,7 +37,7 @@ function App() {
           <Route path="/" element={<Exercise />} />
           <Route path="/exercises/bodyPart/:bodyPart" element={<CategoryDetail />} />
           <Route path="/exercises/detail/:bodyPart/:name" element={<ExerciseDetail />} />
-          <Route path="/note" element={<Note />} />
+          {/* <Route path="/note" element={<Note />} /> */}
           <Route path="/favorites" element={<Favorits />} />
           <Route path="/Message" element={<ChatSocket />} />
           <Route path="/Profile" element={<Profile />} />
@@ -48,7 +48,7 @@ function App() {
           {/* <Route path="/Registration" element={<Registration setShowLogin={setShowLogin} />} /> */}
         </Routes>
         </Suspense>
-        <Footer />  
+        {/* <Footer />   */}
       </Router>
     </I18nextProvider>
   );

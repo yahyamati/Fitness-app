@@ -63,6 +63,8 @@ const getInformations = async (req, res) => {
 
 
 const getAllProfiles = async (req, res) => {
+
+  
     try {
       // Fetch all profiles from the database
       const profiles = await ProfileModel.find();

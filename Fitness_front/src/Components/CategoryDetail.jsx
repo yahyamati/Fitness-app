@@ -64,32 +64,32 @@ export default function CategoryDetail() {
     loadCartData();
   }, [setCartItem, setNmbrlike]);
 
-  // useEffect(() => {
-  //   const fetchExercises = async () => {
-  //     try {
-  //       const headers = {
-  //         'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-  //         'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
-  //       };
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const headers = {
+          'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+          'x-rapidapi-key': 'fec3de3681msh09ba3c2f0450053p1458c4jsnc6febf322ccb',
+        };
 
-  //       const response = await axios.get(
-  //         `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
-  //         { headers }
-  //       );
-  //       setExercisesByCategory(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching exercises:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        const response = await axios.get(
+          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+          { headers }
+        );
+        setExercisesByCategory(response.data);
+      } catch (error) {
+        console.error('Error fetching exercises:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   if (bodyPart) {
-  //     fetchExercises();
-  //   } else {
-  //     console.error('Body part is undefined');
-  //   }
-  // }, [bodyPart]);
+    if (bodyPart) {
+      fetchExercises();
+    } else {
+      console.error('Body part is undefined');
+    }
+  }, [bodyPart]);
 
   const filteredExercises = exercisesByCategory.filter((exercise) =>
     exercise.name.toLowerCase().includes(searchTerm.toLowerCase())

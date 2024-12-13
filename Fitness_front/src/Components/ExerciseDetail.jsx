@@ -19,41 +19,41 @@ const ExerciseDetail = () => {
     setShowChat((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   const fetchExercise = async () => {
-  //     try {
-  //       const headers = {
-  //         'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-  //         'x-rapidapi-key': '701756e02fmsh738bc48d73bfa7ap18dcb3jsn91e55002f279',
-  //       };
+  useEffect(() => {
+    const fetchExercise = async () => {
+      try {
+        const headers = {
+          'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+          'x-rapidapi-key': 'fec3de3681msh09ba3c2f0450053p1458c4jsnc6febf322ccb',
+        };
 
-  //       const response = await axios.get(
-  //         `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
-  //         { headers }
-  //       );
+        const response = await axios.get(
+          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+          { headers }
+        );
 
-  //       if (Array.isArray(response.data)) {
-  //         const foundExercise = response.data.find(
-  //           (ex) => ex.name.toLowerCase() === name?.toLowerCase()
-  //         );
-  //         if (foundExercise) {
-  //           setExercise(foundExercise);
-  //         } else {
-  //           setError('Exercise not found');
-  //         }
-  //       } else {
-  //         setError('Unexpected response structure');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching exercise:', error);
-  //       setError('Failed to fetch exercise');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        if (Array.isArray(response.data)) {
+          const foundExercise = response.data.find(
+            (ex) => ex.name.toLowerCase() === name?.toLowerCase()
+          );
+          if (foundExercise) {
+            setExercise(foundExercise);
+          } else {
+            setError('Exercise not found');
+          }
+        } else {
+          setError('Unexpected response structure');
+        }
+      } catch (error) {
+        console.error('Error fetching exercise:', error);
+        setError('Failed to fetch exercise');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchExercise();
-  // }, [name, bodyPart]);
+    fetchExercise();
+  }, [name, bodyPart]);
 
   if (loading) {
     return (

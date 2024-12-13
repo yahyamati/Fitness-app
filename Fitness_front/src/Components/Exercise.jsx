@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StoreContext } from '../context/StoreContext';
+import { StoreContext } from '../Context/StoreContext';
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import Chat from '../chat/chat';
